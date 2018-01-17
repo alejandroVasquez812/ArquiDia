@@ -34,7 +34,7 @@ endmodule
 /*
 *
 */
-module Condition_Tester(output reg BCOND, TCOND, input [6:0] IR31_25, input C, N, V, Z);
+module Condition_Tester(output reg BCOND, TCOND, input [6:0] IR31_25, input [3:0] WIM, input [11:0] PSR input C, N, V, Z);
 
 //***************************************
 //	Branch and Trap Condition Codes

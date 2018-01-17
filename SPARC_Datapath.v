@@ -1,3 +1,4 @@
+`include "ALU.v"
 `include "RAM.v"
 `include "Register_Windows.v"
 `include "Condition_Tester.v"
@@ -17,12 +18,13 @@ module DataPath(output reg [31:0] wIROut, output reg MOC, BCOND, TCOND, input[1:
 	wire TCond;
 	supply0 Gnd;
 
-	ALU SPARC_ALU(wALUOut, ); //TODO
+	ALU SPARC_ALU(wALUOut, wN, wZ, wC, wV, wMuxOPOut, wMuxAOut, wMuxBOut, wFROut[3]);
 	RamAccess SPARC_RAM(wDataOut, MOC, MOV, RW, wMAROut[8:0], wMDROut, type);
-	Register_Windows SPARC_Register_Windows(wPortA, wPortB, wALUOut, ); //TODO
+	Register_Windows SPARC_Register_Windows(wPortA, wPortB, wALUOut, wMuxSaOut, wIROut[4:0], wMuxScOut,
+		Clear_Select, wPSROut[1:0], RF_Load_Enable, RF_Clear_Enable, Register_Windows_Enable, Clk);
 
 
-	Condition_Tester SPARC_Condition_Tester(); //TODO
+	Condition_Tester SPARC_Condition_Tester(BCOND, TCOND, wIROut[31:25], wWIMOut[3:0], wPSROut[11:0], wC, wN, wV, wZ);
 	Shifter_And_Sign_Extender SPARC_Shifter(wShifterOut, wIROut);
 
 //*********************************
@@ -50,7 +52,7 @@ module DataPath(output reg [31:0] wIROut, output reg MOC, BCOND, TCOND, input[1:
 	or(wPSR_Ld, wPSR_TCond, wPSR_Sup);
 	Register_28Bits PSR(wPSROut, wALUOut, Clk, Gnd, wPSR_Ld);
 
-	FlagRegister FR(wFROut, {}, Clk, FR_Ld); //TODO
+	FlagRegister FR(wFROut, {wC, wN, wV, wZ}, Clk, FR_Ld);
 
 
 //*********************************
@@ -79,7 +81,7 @@ module DataPath(output reg [31:0] wIROut, output reg MOC, BCOND, TCOND, input[1:
 
 	Mux5_4x1 MuxSc(wMuxScOut, wIROut[29:25], 5'h0F, 5'h11, 5'h12);
 	Mux6_2x1 MuxOP(wMuxOPOut, wIROut[24:19], OpXX, MOP);
-	Mux4_2x1 MuxF(wMuxFOut, , wALUOut[23:20], MF); //TODO
+	Mux4_2x1 MuxF(wMuxFOut, {wC, wN, wV, wZ}, wALUOut[23:20], MF);
 
 endmodule
 
