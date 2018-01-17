@@ -3,7 +3,11 @@ always@(op,A,B)
 begin
 case(op)
 6'b000000: Y=A+B; // ADD
-6'b000001: Y=A&B; // AND bitwise
+6'b000001:begin{C,Y}=A&B; N=Y[31];
+if(Y==0) Z=1;
+else Z=0;
+V=0;
+end // AND bitwise
 6'b010001:begin{C,Y}=A&B; // AND bitwise modify cc
 N=Y[31];
 if(Y==0) Z=1;
@@ -79,8 +83,16 @@ end
 6'b100101: Y=A<<B[4:0];//logical shift left
 6'b100110: Y=A>>B[4:0]; //logical shift right
 6'b100111: Y=A>>>B[4:0]; // arithmetic shift right
+
+//NEW
 6'b100000: Y=A;
 6'b100001: Y=B;
+6'b100010: Y={A[31:5],A[4:0]-1};
+6'b100011: Y={A[31:5],A[4:0]+1};
+6'b100100: begin Y={A[31:8],A[7]=A[6],1,A[4:0]+1};
+6'b011111: begin Y={A[31:8],1,0,A[5]=0,A[4:0]-1};
+
+6'b100101: Y=A[4:0]+1;
 endcase
 end
 endmodule
