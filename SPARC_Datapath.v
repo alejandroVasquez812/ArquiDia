@@ -13,8 +13,10 @@ wire[31:0] wALUOut, wDataOut, wMAROut, wMDROut, wPCOut, wNPCOut, wShifterOut, wA
 	wire[27:0] wPSROut;
 	wire[3:0] wTTROut;
 	wire[3:0] wFROut;
+
 	wire TCond;
 	supply0 Gnd;
+
 
 	alu SPARC_ALU(wALUOut, wN, wZ, wC, wV, wMuxOPOut, wMuxAOut, wMuxBOut, wFROut[3]);
 	RamAccess SPARC_RAM(wDataOut, MOC, MOV, RW, wMAROut[8:0], wMDROut, type);
@@ -24,6 +26,7 @@ wire[31:0] wALUOut, wDataOut, wMAROut, wMDROut, wPCOut, wNPCOut, wShifterOut, wA
 
 	Condition_Tester SPARC_Condition_Tester(BCOND, TCOND, wIROut[31:25], wWIMOut[3:0], wPSROut[11:0], wC, wN, wV, wZ);
 	Shifter_And_SignExtender SPARC_Shifter(wShifterOut, wIROut);
+
 
 //*********************************
 //	DataPath Registers
@@ -44,6 +47,7 @@ wire[31:0] wALUOut, wDataOut, wMAROut, wMDROut, wPCOut, wNPCOut, wShifterOut, wA
 	and(wTBR_Ld, TBR_Ld, wPSROut[7]);
 	Register_29Bits TBR(wTBROut, {wALUOut[31:7], wALUOut[3:0]}, Clk, Gnd, TBR_Ld);
 	Register_4Bits TTR(wTTROut, wALUOut[6:4], CLk, Gnd, TTR_Ld);
+
 
 	and(wPSR_TCond, PSR_Ld, wTCond);
 	and(wPSR_Sup, PSR_Ld, wPSROut[7]);
