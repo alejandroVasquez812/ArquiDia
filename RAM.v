@@ -1,5 +1,5 @@
 `include "ram128x8.v"
-module RamAccess(output reg[31:0] DataOut0,output reg MOC, input Enable0, ReadWrite, input [8:0] Address, input [31:0] DataIn0, input [3:0] mode);
+module RamAccess(output reg[31:0] DataOut0,output reg MOC, input Enable0, ReadWrite, input [8:0] Address, input [31:0] DataIn0, input [1:0] mode);
 	integer fi,fo,code,i; reg[31:0] data;
 	reg Enable; reg Enable2;
 	reg Enable3; reg Enable4;
