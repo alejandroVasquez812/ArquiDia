@@ -5,14 +5,16 @@
 `include "Flag_Register.v"
 `include "Shifter_And_SignExtender.v"
 
-module DataPath(output reg [31:0] wIROut, output reg MOC, BCOND, TCOND, Register_Windows_Enable, RF_Load_Enable, RF_Clear_Enable, input[4:0] Clear_Select, IR_Ld, MAR_Ld, MDR_Ld, WIM_Ld, TBR_Ld, TTR_Ld, PC_Ld, NPC_Ld, nPC_Clr, PSR_Ld, RW, MOV,input[1:0]type, FR_Ld, input [1:0] MA, MB,input MC, MF, MM,input [1:0] MNP,input MOP, input [1:0] MP, input MSa,input [1:0] MSc, input [5:0] OpXX, input Clk);
+module DataPath(output [31:0] wIROut, output MOC, BCOND, TCOND, input Register_Windows_Enable, RF_Load_Enable, RF_Clear_Enable, input[4:0] Clear_Select, input IR_Ld, MAR_Ld, MDR_Ld, WIM_Ld, TBR_Ld, TTR_Ld, PC_Ld, NPC_Ld, nPC_Clr, PSR_Ld, RW, MOV,input[1:0]type, input FR_Ld, input [1:0] MA, MB,input MC, MF, MM,input [1:0] MNP,input MOP, input [1:0] MP, input MSa,input [1:0] MSc, input [5:0] OpXX, input Clk);
 
-wire[31:0] wALUOut, wDataOut, wMAROut, wMDROut, wPCOut, wNPCOut, wShifterOut, wAddShifterOut, wAddNPCOut, wAddSumNPCOut,wMuxMOut, wMuxPOut, wMuxNPOut, wWIMOut, wPortA, wPortB, wMuxAOut, wMuxBOut, wMuxCOut, wMuxSaOut, wMuxScOut, wMuxOPOut, wMuxFOut;
+wire[31:0] wALUOut, wDataOut, wMAROut, wMDROut, wPCOut, wNPCOut, wShifterOut, wAddShifterOut, wAddNPCOut, wAddSumNPCOut,wMuxMOut, wMuxPOut, wMuxNPOut, wWIMOut, wPortA, wPortB, wMuxAOut, wMuxBOut, wMuxCOut;
 
-	wire[28:0] wTBROut;
+	wire[5:0] wMuxOPOut;
+        wire [4:0] wMuxSaOut, wMuxScOut ;
+        wire[28:0] wTBROut;
 	wire[27:0] wPSROut;
-	wire[3:0] wTTROut;
-	wire[3:0] wFROut;
+	wire[2:0] wTTROut;
+	wire[3:0] wFROut, wMuxFOut;
 
 	wire TCond;
 	supply0 Gnd;
@@ -20,8 +22,7 @@ wire[31:0] wALUOut, wDataOut, wMAROut, wMDROut, wPCOut, wNPCOut, wShifterOut, wA
 
 	alu SPARC_ALU(wALUOut, wN, wZ, wC, wV, wMuxOPOut, wMuxAOut, wMuxBOut, wFROut[3]);
 	RamAccess SPARC_RAM(wDataOut, MOC, MOV, RW, wMAROut[8:0], wMDROut, type);
-	Register_Windows SPARC_Register_Windows(wPortA, wPortB, wALUOut, wMuxSaOut, wIROut[4:0], wMuxScOut,
-		Clear_Select, wPSROut[1:0], RF_Load_Enable, RF_Clear_Enable, Register_Windows_Enable, Clk);
+	Register_Windows SPARC_Register_Windows(wPortA, wPortB, wALUOut, wMuxSaOut, wIROut[4:0], wMuxScOut, Clear_Select, wPSROut[1:0], RF_Load_Enable, RF_Clear_Enable, Register_Windows_Enable, Clk);
 
 
 	Condition_Tester SPARC_Condition_Tester(BCOND, TCOND, wIROut[31:25], wWIMOut[3:0], wPSROut[11:0], wC, wN, wV, wZ);
@@ -46,7 +47,7 @@ wire[31:0] wALUOut, wDataOut, wMAROut, wMDROut, wPCOut, wNPCOut, wShifterOut, wA
 
 	and(wTBR_Ld, TBR_Ld, wPSROut[7]);
 	Register_29Bits TBR(wTBROut, {wALUOut[31:7], wALUOut[3:0]}, Clk, Gnd, TBR_Ld);
-	Register_4Bits TTR(wTTROut, wALUOut[6:4], CLk, Gnd, TTR_Ld);
+	Register_3Bits TTR(wTTROut, wALUOut[6:4], CLk, Gnd, TTR_Ld);
 
 
 	and(wPSR_TCond, PSR_Ld, wTCond);
@@ -77,11 +78,11 @@ wire[31:0] wALUOut, wDataOut, wMAROut, wMDROut, wPCOut, wNPCOut, wShifterOut, wA
 
 
 	Mux32_4x1 MuxNP(wMuxNPOut, wALUOut, wAddSumNPCOut, wAddShifterOut, wAddNPCOut, MNP);
-	Mux32_4x1 MuxP(wMuxPOut, 32'h00000000, {wTBROut[28:4], wTTROut, wTBROut[3:0]}, wAddNPCOut, wNPCOut);
+	Mux32_4x1 MuxP(wMuxPOut, 32'h00000000, {wTBROut[28:4], wTTROut, wTBROut[3:0]}, wAddNPCOut, wNPCOut,MP);
 	Mux5_2x1 MuxSa(wMuxSaOut, wIROut[18:14], wIROut[29:25], MSa); 
 
 
-	Mux5_4x1 MuxSc(wMuxScOut, wIROut[29:25], 5'h0F, 5'h11, 5'h12);
+	Mux5_4x1 MuxSc(wMuxScOut, wIROut[29:25], 5'h0F, 5'h11, 5'h12,MSc);
 	Mux6_2x1 MuxOP(wMuxOPOut, wIROut[24:19], OpXX, MOP);
 	Mux4_2x1 MuxF(wMuxFOut, {wC, wN, wV, wZ}, wALUOut[23:20], MF);
 
@@ -176,7 +177,7 @@ end
 endmodule
 
 
-module Register_4Bits(output reg [3:0] Q, input [3:0] D, input Clk, Clr, Le);
+module Register_3Bits(output reg [2:0] Q, input [2:0] D, input Clk, Clr, Le);
 always@(posedge Clk, Clr) //Reminder: Possible Change to Clr in negedge
 begin
 if(Clr)
