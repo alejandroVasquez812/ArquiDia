@@ -1,13 +1,16 @@
+
 module TestCondition;
 
 //Inputs
 reg[6:0] IR31_25;
 reg C,N,V,Z;
+reg [11:0] PSR;
+reg [3:0] WIM;
 
 //Outputs
 wire BCOND, TCOND;
 
-Condition_Tester myConditionTester(BCOND, TCOND, IR31_25, C, N, V, Z);
+Condition_Tester myConditionTester(BCOND, TCOND, IR31_25,WIM,PSR, C, N, V, Z);
 
 initial fork
 	C = 1'b1;
@@ -34,7 +37,7 @@ endmodule
 /*
 *
 */
-module Condition_Tester(output reg BCOND, TCOND, input [6:0] IR31_25, input [3:0] WIM, input [11:0] PSR input C, N, V, Z);
+module Condition_Tester(output reg BCOND, TCOND, input [6:0] IR31_25, input [3:0] WIM, input [11:0] PSR, input C, N, V, Z);
 
 //***************************************
 //	Branch and Trap Condition Codes
