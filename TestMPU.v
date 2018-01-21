@@ -42,9 +42,9 @@ initial begin
 
 end
 initial fork
-	Clr = 1'b1;
-	#2 Clr = 1'b0;
+	Clr = 1'b0;
 	#2 Clr = 1'b1;
+	#2 Clr = 1'b0;
 join
 
 
