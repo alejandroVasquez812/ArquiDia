@@ -5,9 +5,9 @@
 `include "Flag_Register.v"
 `include "Shifter_And_SignExtender.v"
 
-module DataPath(output [31:0] wIROut, output MOC, BCOND, TCOND, input Register_Windows_Enable, RF_Load_Enable, RF_Clear_Enable, input[4:0] Clear_Select, input IR_Ld, MAR_Ld, MDR_Ld, WIM_Ld, TBR_Ld, TTR_Ld, PC_Ld, NPC_Ld, nPC_Clr, PSR_Ld, RW, MOV,input[1:0]type, input FR_Ld, input [1:0] MA, MB,input MC, MF, MM,input [1:0] MNP,input MOP, input [1:0] MP, input MSa,input [1:0] MSc, input [5:0] OpXX, input Clk);
+module DataPath(output [31:0] wIROut, wMAROut, output MOC, BCOND, TCOND, input Register_Windows_Enable, RF_Load_Enable, RF_Clear_Enable, input[4:0] Clear_Select, input IR_Ld, MAR_Ld, MDR_Ld, WIM_Ld, TBR_Ld, TTR_Ld, PC_Ld, NPC_Ld, nPC_Clr, PSR_Ld, RW, MOV,input[1:0]type, input FR_Ld, input [1:0] MA, MB,input MC, MF, MM,input [1:0] MNP,input MOP, input [1:0] MP, input MSa,input [1:0] MSc, input [5:0] OpXX, input Clk);
 
-wire[31:0] wALUOut, wDataOut, wMAROut, wMDROut, wPCOut, wNPCOut, wShifterOut, wAddShifterOut, wAddNPCOut, wAddSumNPCOut,wMuxMOut, wMuxPOut, wMuxNPOut, wWIMOut, wPortA, wPortB, wMuxAOut, wMuxBOut, wMuxCOut;
+wire[31:0] wALUOut, wDataOut, wIROut, wMAROut, wMDROut, wPCOut, wNPCOut, wShifterOut, wAddShifterOut, wAddNPCOut, wAddSumNPCOut,wMuxMOut, wMuxPOut, wMuxNPOut, wWIMOut, wPortA, wPortB, wMuxAOut, wMuxBOut, wMuxCOut;
 
 	wire[5:0] wMuxOPOut;
         wire [4:0] wMuxSaOut, wMuxScOut ;
@@ -53,7 +53,7 @@ wire[31:0] wALUOut, wDataOut, wMAROut, wMDROut, wPCOut, wNPCOut, wShifterOut, wA
 	and(wPSR_TCond, PSR_Ld, wTCond);
 	and(wPSR_Sup, PSR_Ld, wPSROut[7]);
 	or(wPSR_Ld, wPSR_TCond, wPSR_Sup);
-	Register_28Bits PSR(wPSROut, wALUOut, Clk, Gnd, wPSR_Ld);
+	Register_28Bits PSR(wPSROut, {wALUOut[31:24],wALUOut[19:0]}, Clk, Gnd, wPSR_Ld);
 
 	FlagRegister FR(wFROut, {wC, wN, wV, wZ}, Clk, FR_Ld);
 

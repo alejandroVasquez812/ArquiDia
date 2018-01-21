@@ -608,6 +608,7 @@ if(!Clr) State <= 7'b0000000;
 else State <= NextState;
 endmodule
 
+
 module ControlSignalEncoder(output reg reg_win_en, rf_load_en, rf_clear_en, output reg [4:0] clear_select, output reg ir_ld, mar_ld, mdr_ld, wim_ld, tbr_ld, ttr_ld, pc_ld, npc_ld, npc_clr, psr_ld, r_w, mov, output reg [1:0] type, output reg fr_ld, output reg [1:0] ma, mb, output reg mc, mf, mm, output reg [1:0] mnp, output reg mop, output reg [1:0] mp, output reg msa, output reg [1:0] msc, output reg [5:0] opxx, input [6:0] State);
 always @ (State)
 case (State)
