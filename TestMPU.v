@@ -26,17 +26,16 @@ initial #sim_time $finish;
 
 initial begin
 		//Preload RAM with input file
-		ReadWrite=1'b0;
-		mode=0;
-		Address=7'b0000000;
+		MPU.CU.CSE.r_w=1'b0;
+		MPU.CU.CSE.type=0;
+		MPU.DP.MAR.Q=7'b0000000;
 		fi=$fopen("input.txt","r");
 		while(!$feof(fi))begin
 			code = $fscanf(fi, "%b", Data);
-			Enable=0;
-                        MPU.DP.SPARC_RAM.ram.Mem[Address] = Data;
-			#1 Enable=1'b1;
-			#1 wait(MPU.DP.SPARC_RAM.MOC1==1);
-			#1 Address=Address+1;
+			MPU.CU.CSE.mov=0;
+                        MPU.DP.MDR.Q = Data;
+			#1 MPU.CU.CSE.mov=1'b1;
+			#1 MPU.DP.MAR.Q=MPU.DP.MAR.Q+1;
 		end
 		$fclose(fi);
 

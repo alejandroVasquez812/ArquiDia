@@ -6,11 +6,11 @@ always @ (Enable) begin
 		
 			if(ReadWrite)begin
 				DataOut=Mem[Address>>>2];
-				$display("Data leida del Address %d es %b",Address,DataOut);
+				//$display("Data leida del Address %d es %b",Address,DataOut);
 				end
 			else begin
 				Mem[Address>>>2]=DataIn;
-				$display("Data escrita en el Address %d es %b   %d",Address,DataIn,$time);
+				//$display("Data escrita en el Address %d es %b   %d",Address,DataIn,$time);
 				end
 		 assign MOC=0;
 		 end
