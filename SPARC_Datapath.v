@@ -1,11 +1,12 @@
 `include "ALU.v"
 `include "RAM.v"
+//`include "jrsmRAM.v"
 `include "Register_Windows.v"
 `include "Condition_Tester.v"
 `include "Flag_Register.v"
 `include "Shifter_And_SignExtender.v"
 
-module DataPath(output [31:0] wIROut, wMAROut, output MOC, BCOND, TCOND, input Register_Windows_Enable, RF_Load_Enable, RF_Clear_Enable, input[4:0] Clear_Select, input IR_Ld, MAR_Ld, MDR_Ld, WIM_Ld, TBR_Ld, TTR_Ld, PC_Ld, NPC_Ld, nPC_Clr, PSR_Ld, RW, MOV,input[1:0]type, input FR_Ld, input [1:0] MA, MB,input MC, MF, MM,input [1:0] MNP,input MOP, input [1:0] MP, input MSa,input [1:0] MSc, input [5:0] OpXX, input Clk);
+module DataPath(output [31:0] wIROut, wMAROut, output MOC, BCOND, TCOND, input Register_Windows_Enable, RF_Load_Enable, RF_Clear_Enable, input IR_Ld, MAR_Ld, MDR_Ld, WIM_Ld, TBR_Ld, TTR_Ld, PC_Ld, NPC_Ld, nPC_Clr, PSR_Ld, RW, MOV,input[1:0]type, input FR_Ld, input [1:0] MA, MB,input MC, MF, MM,input [1:0] MNP,input MOP, input [1:0] MP, input MSa,input [1:0] MSc, input [5:0] OpXX, input Clk);
 
 wire[31:0] wALUOut, wDataOut, wIROut, wMAROut, wMDROut, wPCOut, wNPCOut, wShifterOut, wAddShifterOut, wAddNPCOut, wAddSumNPCOut,wMuxMOut, wMuxPOut, wMuxNPOut, wWIMOut, wPortA, wPortB, wMuxAOut, wMuxBOut, wMuxCOut;
 
@@ -21,8 +22,10 @@ wire[31:0] wALUOut, wDataOut, wIROut, wMAROut, wMDROut, wPCOut, wNPCOut, wShifte
 
 
 	alu SPARC_ALU(wALUOut, wN, wZ, wC, wV, wMuxOPOut, wMuxAOut, wMuxBOut, wFROut[3]);
-	RamAccess SPARC_RAM(wDataOut, MOC, MOV, RW, wMAROut[8:0], wMDROut, type);
-	Register_Windows SPARC_Register_Windows(wPortA, wPortB, wALUOut, wMuxSaOut, wIROut[4:0], wMuxScOut, Clear_Select, wPSROut[1:0], RF_Load_Enable, RF_Clear_Enable, Register_Windows_Enable, Clk);
+	//RamAccess SPARC_RAM(wDataOut, MOC, MOV, RW, wMAROut[8:0], wMDROut, type);
+	RAM SPARC_RAM(wDataOut, MOC, wMDROut, wMAROut[8:0], type, RW, MOV);
+
+	Register_Windows SPARC_Register_Windows(wPortA, wPortB, wALUOut, wMuxSaOut, wIROut[4:0], wMuxScOut, wPSROut[1:0], RF_Load_Enable, RF_Clear_Enable, Register_Windows_Enable, Clk);
 
 
 	Condition_Tester SPARC_Condition_Tester(BCOND, TCOND, wIROut[31:25], wWIMOut[3:0], wPSROut[11:0], wC, wN, wV, wZ);

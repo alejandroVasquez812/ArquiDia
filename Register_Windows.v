@@ -6,10 +6,10 @@
 	@author Johnny R. Sanchez Marrero
 */
 module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4:0] Sa, Sb, Load_Select,
-		Clear_Select, input [1:0] Cwp, input RF_Load_Enable, RF_Clear_Enable, Register_Windows_Enable, Clk);
+		 input [1:0] Cwp, input RF_Load_Enable, RF_Clear_Enable, Register_Windows_Enable, Clk);
 
 	//Decoder Outputs
-	wire [31:0] Load_Enable_Decoder_Out, Register_Clear_Decoder_Out;
+	wire [31:0] Load_Enable_Decoder_Out;
         wire [3:0]  Current_Window_Decoder_Out;
 
 
@@ -50,14 +50,6 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
 	 * to store the value coming in from PortC.
 	 */
 	Decoder_5x32 Load_Enable_Decoder(Load_Enable_Decoder_Out, Load_Select, RF_Load_Enable);
-
-        /*
-         * Register_Clear_Decoder:
-         *
-         * Selects which Register will be cleared
-         * to zero (0).
-         */
-	Decoder_5x32 Register_Clear_Decoder(Register_Clear_Decoder_Out, Clear_Select, RF_Clear_Enable);
 
 
         /*
@@ -155,17 +147,17 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
 //*******************************
 
 	//R0-R3
-	Register_32Bits R0(wR0_Out, PortC, Clk, Register_Clear_Decoder_Out[0], Load_Enable_Decoder_Out[0]);
-	Register_32Bits R1(wR1_Out, PortC, Clk, Register_Clear_Decoder_Out[1], Load_Enable_Decoder_Out[1]);
-	Register_32Bits R2(wR2_Out, PortC, Clk, Register_Clear_Decoder_Out[2], Load_Enable_Decoder_Out[2]);
-	Register_32Bits R3(wR3_Out, PortC, Clk, Register_Clear_Decoder_Out[3], Load_Enable_Decoder_Out[3]);
+	Register_32Bits R0(wR0_Out, PortC, Clk, RF_Clear_Enable, Load_Enable_Decoder_Out[0]);
+	Register_32Bits R1(wR1_Out, PortC, Clk, RF_Clear_Enable, Load_Enable_Decoder_Out[1]);
+	Register_32Bits R2(wR2_Out, PortC, Clk, RF_Clear_Enable, Load_Enable_Decoder_Out[2]);
+	Register_32Bits R3(wR3_Out, PortC, Clk, RF_Clear_Enable, Load_Enable_Decoder_Out[3]);
 
 
 	//R4-R7
-	Register_32Bits R4(wR4_Out, PortC, Clk, Register_Clear_Decoder_Out[4], Load_Enable_Decoder_Out[4]);
-        Register_32Bits R5(wR5_Out, PortC, Clk, Register_Clear_Decoder_Out[5], Load_Enable_Decoder_Out[5]);
-        Register_32Bits R6(wR6_Out, PortC, Clk, Register_Clear_Decoder_Out[6], Load_Enable_Decoder_Out[6]);
-        Register_32Bits R7(wR7_Out, PortC, Clk, Register_Clear_Decoder_Out[7], Load_Enable_Decoder_Out[7]);
+	Register_32Bits R4(wR4_Out, PortC, Clk, RF_Clear_Enable, Load_Enable_Decoder_Out[4]);
+        Register_32Bits R5(wR5_Out, PortC, Clk, RF_Clear_Enable, Load_Enable_Decoder_Out[5]);
+        Register_32Bits R6(wR6_Out, PortC, Clk, RF_Clear_Enable, Load_Enable_Decoder_Out[6]);
+        Register_32Bits R7(wR7_Out, PortC, Clk, RF_Clear_Enable, Load_Enable_Decoder_Out[7]);
 
 
 //******************************
@@ -183,8 +175,8 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
 	and(En24_W2, Load_Enable_Decoder_Out[24], Current_Window_Decoder_Out[2]);
 	or(wR8_Ld_In, En8_W3, En24_W2);
 
-        and(Clr8_W3, Register_Clear_Decoder_Out[8], Current_Window_Decoder_Out[3]);
-  	and(Clr24_W2, Register_Clear_Decoder_Out[24], Current_Window_Decoder_Out[2]);
+        and(Clr8_W3, RF_Clear_Enable, Current_Window_Decoder_Out[3]);
+  	and(Clr24_W2, RF_Clear_Enable, Current_Window_Decoder_Out[2]);
 	or(wR8_Clr_In, Clr8_W3, Clr24_W2);
 
 	Register_32Bits R8(wR8_Out, PortC, Clk, wR8_Clr_In, wR8_Ld_In);
@@ -196,8 +188,8 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
         and(En25_W2, Load_Enable_Decoder_Out[25], Current_Window_Decoder_Out[2]);
         or(wR9_Ld_In, En9_W3, En25_W2);
 
-        and(Clr9_W3, Register_Clear_Decoder_Out[9], Current_Window_Decoder_Out[3]);
-        and(Clr25_W2, Register_Clear_Decoder_Out[25], Current_Window_Decoder_Out[2]);
+        and(Clr9_W3, RF_Clear_Enable, Current_Window_Decoder_Out[3]);
+        and(Clr25_W2, RF_Clear_Enable, Current_Window_Decoder_Out[2]);
         or(wR9_Clr_In, Clr9_W3, Clr25_W2);
 
         Register_32Bits R9(wR9_Out, PortC, Clk, wR9_Clr_In, wR9_Ld_In);
@@ -209,8 +201,8 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
         and(En26_W2, Load_Enable_Decoder_Out[26], Current_Window_Decoder_Out[2]);
         or(wR10_Ld_In, En10_W3, En26_W2);
 
-        and(Clr10_W3, Register_Clear_Decoder_Out[10], Current_Window_Decoder_Out[3]);
-        and(Clr26_W2, Register_Clear_Decoder_Out[26], Current_Window_Decoder_Out[2]);
+        and(Clr10_W3, RF_Clear_Enable, Current_Window_Decoder_Out[3]);
+        and(Clr26_W2, RF_Clear_Enable, Current_Window_Decoder_Out[2]);
         or(wR10_Clr_In, Clr10_W3, Clr26_W2);
 
         Register_32Bits R10(wR10_Out, PortC, Clk, wR10_Clr_In, wR10_Ld_In);
@@ -222,8 +214,8 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
         and(En27_W2, Load_Enable_Decoder_Out[27], Current_Window_Decoder_Out[2]);
         or(wR11_Ld_In, En11_W3, En27_W2);
 
-        and(Clr11_W3, Register_Clear_Decoder_Out[11], Current_Window_Decoder_Out[3]);
-        and(Clr27_W2, Register_Clear_Decoder_Out[27], Current_Window_Decoder_Out[2]);
+        and(Clr11_W3, RF_Clear_Enable, Current_Window_Decoder_Out[3]);
+        and(Clr27_W2, RF_Clear_Enable, Current_Window_Decoder_Out[2]);
         or(wR11_Clr_In, Clr11_W3, Clr27_W2);
 
         Register_32Bits R11(wR11_Out, PortC, Clk, wR11_Clr_In, wR11_Ld_In);
@@ -235,8 +227,8 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
         and(En28_W2, Load_Enable_Decoder_Out[28], Current_Window_Decoder_Out[2]);
         or(wR12_Ld_In, En12_W3, En28_W2);
 
-        and(Clr12_W3, Register_Clear_Decoder_Out[12], Current_Window_Decoder_Out[3]);
-        and(Clr28_W2, Register_Clear_Decoder_Out[28], Current_Window_Decoder_Out[2]);
+        and(Clr12_W3, RF_Clear_Enable, Current_Window_Decoder_Out[3]);
+        and(Clr28_W2, RF_Clear_Enable, Current_Window_Decoder_Out[2]);
         or(wR12_Clr_In, Clr12_W3, Clr28_W2);
 
         Register_32Bits R12(wR12_Out, PortC, Clk, wR12_Clr_In, wR12_Ld_In);
@@ -248,8 +240,8 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
         and(En29_W2, Load_Enable_Decoder_Out[29], Current_Window_Decoder_Out[2]);
         or(wR13_Ld_In, En13_W3, En29_W2);
 
-        and(Clr13_W3, Register_Clear_Decoder_Out[13], Current_Window_Decoder_Out[3]);
-        and(Clr29_W2, Register_Clear_Decoder_Out[29], Current_Window_Decoder_Out[2]);
+        and(Clr13_W3, RF_Clear_Enable, Current_Window_Decoder_Out[3]);
+        and(Clr29_W2, RF_Clear_Enable, Current_Window_Decoder_Out[2]);
         or(wR13_Clr_In, Clr13_W3, Clr29_W2);
 
         Register_32Bits R13(wR13_Out, PortC, Clk, wR13_Clr_In, wR13_Ld_In);
@@ -261,8 +253,8 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
         and(En30_W2, Load_Enable_Decoder_Out[30], Current_Window_Decoder_Out[2]);
         or(wR14_Ld_In, En14_W3, En30_W2);
 
-        and(Clr14_W3, Register_Clear_Decoder_Out[14], Current_Window_Decoder_Out[3]);
-        and(Clr30_W2, Register_Clear_Decoder_Out[30], Current_Window_Decoder_Out[2]);
+        and(Clr14_W3, RF_Clear_Enable, Current_Window_Decoder_Out[3]);
+        and(Clr30_W2, RF_Clear_Enable, Current_Window_Decoder_Out[2]);
         or(wR14_Clr_In, Clr14_W3, Clr30_W2);
 
         Register_32Bits R14(wR14_Out, PortC, Clk, wR14_Clr_In, wR14_Ld_In);
@@ -274,8 +266,8 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
         and(En31_W2, Load_Enable_Decoder_Out[31], Current_Window_Decoder_Out[2]);
         or(wR15_Ld_In, En15_W3, En31_W2);
 
-        and(Clr15_W3, Register_Clear_Decoder_Out[15], Current_Window_Decoder_Out[3]);
-        and(Clr31_W2, Register_Clear_Decoder_Out[31], Current_Window_Decoder_Out[2]);
+        and(Clr15_W3, RF_Clear_Enable, Current_Window_Decoder_Out[3]);
+        and(Clr31_W2, RF_Clear_Enable, Current_Window_Decoder_Out[2]);
         or(wR15_Clr_In, Clr15_W3, Clr31_W2);
 
         Register_32Bits R15(wR15_Out, PortC, Clk, wR15_Clr_In, wR15_Ld_In);
@@ -285,56 +277,56 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
 //---Local-Registers-Window 3---
 //------------------------------
         and(wR16_Ld_In, Load_Enable_Decoder_Out[16], Current_Window_Decoder_Out[3]);
-        and(wR16_Clr_In, Register_Clear_Decoder_Out[16], Current_Window_Decoder_Out[3]);
+        and(wR16_Clr_In, RF_Clear_Enable, Current_Window_Decoder_Out[3]);
 
         Register_32Bits R16(wR16_Out, PortC, Clk, wR16_Clr_In, wR16_Ld_In);
 
 
 
         and(wR17_Ld_In, Load_Enable_Decoder_Out[17], Current_Window_Decoder_Out[3]);
-        and(wR17_Clr_In, Register_Clear_Decoder_Out[17], Current_Window_Decoder_Out[3]);
+        and(wR17_Clr_In, RF_Clear_Enable, Current_Window_Decoder_Out[3]);
 
         Register_32Bits R17(wR17_Out, PortC, Clk, wR17_Clr_In, wR17_Ld_In);
 
 
 
         and(wR18_Ld_In, Load_Enable_Decoder_Out[18], Current_Window_Decoder_Out[3]);
-        and(wR18_Clr_In, Register_Clear_Decoder_Out[18], Current_Window_Decoder_Out[3]);
+        and(wR18_Clr_In, RF_Clear_Enable, Current_Window_Decoder_Out[3]);
 
         Register_32Bits R18(wR18_Out, PortC, Clk, wR18_Clr_In, wR18_Ld_In);
 
 
 
         and(wR19_Ld_In, Load_Enable_Decoder_Out[19], Current_Window_Decoder_Out[3]);
-        and(wR19_Clr_In, Register_Clear_Decoder_Out[19], Current_Window_Decoder_Out[3]);
+        and(wR19_Clr_In, RF_Clear_Enable, Current_Window_Decoder_Out[3]);
 
         Register_32Bits R19(wR19_Out, PortC, Clk, wR19_Clr_In, wR19_Ld_In);
 
 
 
         and(wR20_Ld_In, Load_Enable_Decoder_Out[20], Current_Window_Decoder_Out[3]);
-        and(wR20_Clr_In, Register_Clear_Decoder_Out[20], Current_Window_Decoder_Out[3]);
+        and(wR20_Clr_In, RF_Clear_Enable, Current_Window_Decoder_Out[3]);
 
         Register_32Bits R20(wR20_Out, PortC, Clk, wR20_Clr_In, wR20_Ld_In);
 
 
 
         and(wR21_Ld_In, Load_Enable_Decoder_Out[21], Current_Window_Decoder_Out[3]);
-        and(wR21_Clr_In, Register_Clear_Decoder_Out[21], Current_Window_Decoder_Out[3]);
+        and(wR21_Clr_In, RF_Clear_Enable, Current_Window_Decoder_Out[3]);
 
         Register_32Bits R21(wR21_Out, PortC, Clk, wR21_Clr_In, wR21_Ld_In);
 
 
 
         and(wR22_Ld_In, Load_Enable_Decoder_Out[22], Current_Window_Decoder_Out[3]);
-        and(wR22_Clr_In, Register_Clear_Decoder_Out[22], Current_Window_Decoder_Out[3]);
+        and(wR22_Clr_In, RF_Clear_Enable, Current_Window_Decoder_Out[3]);
 
         Register_32Bits R22(wR22_Out, PortC, Clk, wR22_Clr_In, wR22_Ld_In);
 
 
 
         and(wR23_Ld_In, Load_Enable_Decoder_Out[23], Current_Window_Decoder_Out[3]);
-        and(wR23_Clr_In, Register_Clear_Decoder_Out[23], Current_Window_Decoder_Out[3]);
+        and(wR23_Clr_In, RF_Clear_Enable, Current_Window_Decoder_Out[3]);
 
         Register_32Bits R23(wR23_Out, PortC, Clk, wR23_Clr_In, wR23_Ld_In);
 
@@ -346,8 +338,8 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
         and(En24_W3, Load_Enable_Decoder_Out[24], Current_Window_Decoder_Out[3]);
         or(wR24_Ld_In, En8_W0, En24_W3);
 
-        and(Clr8_W0, Register_Clear_Decoder_Out[8], Current_Window_Decoder_Out[0]);
-        and(Clr24_W3, Register_Clear_Decoder_Out[24], Current_Window_Decoder_Out[3]);
+        and(Clr8_W0, RF_Clear_Enable, Current_Window_Decoder_Out[0]);
+        and(Clr24_W3, RF_Clear_Enable, Current_Window_Decoder_Out[3]);
         or(wR24_Clr_In, Clr8_W0, Clr24_W3);
 
         Register_32Bits R24(wR24_Out, PortC, Clk, wR24_Clr_In, wR24_Ld_In);
@@ -359,8 +351,8 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
         and(En25_W3, Load_Enable_Decoder_Out[25], Current_Window_Decoder_Out[3]);
         or(wR25_Ld_In, En9_W0, En25_W3);
 
-        and(Clr9_W0, Register_Clear_Decoder_Out[9], Current_Window_Decoder_Out[0]);
-        and(Clr25_W3, Register_Clear_Decoder_Out[25], Current_Window_Decoder_Out[3]);
+        and(Clr9_W0, RF_Clear_Enable, Current_Window_Decoder_Out[0]);
+        and(Clr25_W3, RF_Clear_Enable, Current_Window_Decoder_Out[3]);
         or(wR25_Clr_In, Clr9_W0, Clr25_W3);
 
         Register_32Bits R25(wR25_Out, PortC, Clk, wR25_Clr_In, wR25_Ld_In);
@@ -372,8 +364,8 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
         and(En26_W3, Load_Enable_Decoder_Out[26], Current_Window_Decoder_Out[3]);
         or(wR26_Ld_In, En10_W0, En26_W3);
 
-        and(Clr10_W0, Register_Clear_Decoder_Out[10], Current_Window_Decoder_Out[0]);
-        and(Clr26_W3, Register_Clear_Decoder_Out[26], Current_Window_Decoder_Out[3]);
+        and(Clr10_W0, RF_Clear_Enable, Current_Window_Decoder_Out[0]);
+        and(Clr26_W3, RF_Clear_Enable, Current_Window_Decoder_Out[3]);
         or(wR26_Clr_In, Clr10_W0, Clr26_W3);
 
         Register_32Bits R26(wR26_Out, PortC, Clk, wR26_Clr_In, wR26_Ld_In);
@@ -385,8 +377,8 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
         and(En27_W3, Load_Enable_Decoder_Out[27], Current_Window_Decoder_Out[3]);
         or(wR27_Ld_In, En11_W0, En27_W3);
 
-        and(Clr11_W0, Register_Clear_Decoder_Out[11], Current_Window_Decoder_Out[0]);
-        and(Clr27_W3, Register_Clear_Decoder_Out[27], Current_Window_Decoder_Out[3]);
+        and(Clr11_W0, RF_Clear_Enable, Current_Window_Decoder_Out[0]);
+        and(Clr27_W3, RF_Clear_Enable, Current_Window_Decoder_Out[3]);
         or(wR27_Clr_In, Clr11_W0, Clr27_W3);
 
         Register_32Bits R27(wR27_Out, PortC, Clk, wR27_Clr_In, wR27_Ld_In);
@@ -398,8 +390,8 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
         and(En28_W3, Load_Enable_Decoder_Out[28], Current_Window_Decoder_Out[3]);
         or(wR28_Ld_In, En12_W0, En28_W3);
 
-        and(Clr12_W0, Register_Clear_Decoder_Out[12], Current_Window_Decoder_Out[0]);
-        and(Clr28_W3, Register_Clear_Decoder_Out[28], Current_Window_Decoder_Out[3]);
+        and(Clr12_W0, RF_Clear_Enable, Current_Window_Decoder_Out[0]);
+        and(Clr28_W3, RF_Clear_Enable, Current_Window_Decoder_Out[3]);
         or(wR28_Clr_In, Clr12_W0, Clr28_W3);
 
         Register_32Bits R28(wR28_Out, PortC, Clk, wR28_Clr_In, wR28_Ld_In);
@@ -411,8 +403,8 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
         and(En29_W3, Load_Enable_Decoder_Out[29], Current_Window_Decoder_Out[3]);
         or(wR29_Ld_In, En13_W0, En29_W3);
 
-        and(Clr13_W0, Register_Clear_Decoder_Out[13], Current_Window_Decoder_Out[0]);
-        and(Clr29_W3, Register_Clear_Decoder_Out[29], Current_Window_Decoder_Out[3]);
+        and(Clr13_W0, RF_Clear_Enable, Current_Window_Decoder_Out[0]);
+        and(Clr29_W3, RF_Clear_Enable, Current_Window_Decoder_Out[3]);
         or(wR29_Clr_In, Clr13_W0, Clr29_W3);
 
         Register_32Bits R29(wR29_Out, PortC, Clk, wR29_Clr_In, wR29_Ld_In);
@@ -424,8 +416,8 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
         and(En30_W3, Load_Enable_Decoder_Out[30], Current_Window_Decoder_Out[3]);
         or(wR30_Ld_In, En14_W0, En30_W3);
 
-        and(Clr14_W0, Register_Clear_Decoder_Out[14], Current_Window_Decoder_Out[0]);
-        and(Clr30_W3, Register_Clear_Decoder_Out[30], Current_Window_Decoder_Out[3]);
+        and(Clr14_W0, RF_Clear_Enable, Current_Window_Decoder_Out[0]);
+        and(Clr30_W3, RF_Clear_Enable, Current_Window_Decoder_Out[3]);
         or(wR30_Clr_In, Clr14_W0, Clr30_W3);
 
         Register_32Bits R30(wR30_Out, PortC, Clk, wR30_Clr_In, wR30_Ld_In);
@@ -437,8 +429,8 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
         and(En31_W3, Load_Enable_Decoder_Out[31], Current_Window_Decoder_Out[3]);
         or(wR31_Ld_In, En15_W0, En31_W3);
 
-        and(Clr15_W0, Register_Clear_Decoder_Out[15], Current_Window_Decoder_Out[0]);
-        and(Clr31_W3, Register_Clear_Decoder_Out[31], Current_Window_Decoder_Out[3]);
+        and(Clr15_W0, RF_Clear_Enable, Current_Window_Decoder_Out[0]);
+        and(Clr31_W3, RF_Clear_Enable, Current_Window_Decoder_Out[3]);
         or(wR31_Clr_In, Clr15_W0, Clr31_W3);
 
         Register_32Bits R31(wR31_Out, PortC, Clk, wR31_Clr_In, wR31_Ld_In);
@@ -452,8 +444,8 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
         and(En24_W1, Load_Enable_Decoder_Out[24], Current_Window_Decoder_Out[1]);
         or(wR32_Ld_In, En8_W2, En24_W1);
 
-        and(Clr8_W2, Register_Clear_Decoder_Out[8], Current_Window_Decoder_Out[2]);
-        and(Clr24_W1, Register_Clear_Decoder_Out[24], Current_Window_Decoder_Out[1]);
+        and(Clr8_W2, RF_Clear_Enable, Current_Window_Decoder_Out[2]);
+        and(Clr24_W1, RF_Clear_Enable, Current_Window_Decoder_Out[1]);
         or(wR32_Clr_In, Clr8_W2, Clr24_W1);
 
         Register_32Bits R32(wR32_Out, PortC, Clk, wR32_Clr_In, wR32_Ld_In);
@@ -465,8 +457,8 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
         and(En25_W1, Load_Enable_Decoder_Out[25], Current_Window_Decoder_Out[1]);
         or(wR33_Ld_In, En9_W2, En25_W1);
 
-        and(Clr9_W2, Register_Clear_Decoder_Out[9], Current_Window_Decoder_Out[2]);
-        and(Clr25_W1, Register_Clear_Decoder_Out[25], Current_Window_Decoder_Out[1]);
+        and(Clr9_W2, RF_Clear_Enable, Current_Window_Decoder_Out[2]);
+        and(Clr25_W1, RF_Clear_Enable, Current_Window_Decoder_Out[1]);
         or(wR33_Clr_In, Clr9_W2, Clr25_W1);
 
         Register_32Bits R33(wR33_Out, PortC, Clk, wR33_Clr_In, wR33_Ld_In);
@@ -478,8 +470,8 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
         and(En26_W1, Load_Enable_Decoder_Out[26], Current_Window_Decoder_Out[1]);
         or(wR34_Ld_In, En10_W2, En26_W1);
 
-        and(Clr10_W2, Register_Clear_Decoder_Out[10], Current_Window_Decoder_Out[2]);
-        and(Clr26_W1, Register_Clear_Decoder_Out[26], Current_Window_Decoder_Out[1]);
+        and(Clr10_W2, RF_Clear_Enable, Current_Window_Decoder_Out[2]);
+        and(Clr26_W1, RF_Clear_Enable, Current_Window_Decoder_Out[1]);
         or(wR34_Clr_In, Clr10_W2, Clr26_W1);
 
         Register_32Bits R34(wR34_Out, PortC, Clk, wR34_Clr_In, wR34_Ld_In);
@@ -491,8 +483,8 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
         and(En27_W1, Load_Enable_Decoder_Out[27], Current_Window_Decoder_Out[1]);
         or(wR35_Ld_In, En11_W2, En27_W1);
 
-        and(Clr11_W2, Register_Clear_Decoder_Out[11], Current_Window_Decoder_Out[2]);
-        and(Clr27_W1, Register_Clear_Decoder_Out[27], Current_Window_Decoder_Out[1]);
+        and(Clr11_W2, RF_Clear_Enable, Current_Window_Decoder_Out[2]);
+        and(Clr27_W1, RF_Clear_Enable, Current_Window_Decoder_Out[1]);
         or(wR35_Clr_In, Clr11_W2, Clr27_W1);
 
         Register_32Bits R35(wR35_Out, PortC, Clk, wR35_Clr_In, wR35_Ld_In);
@@ -504,8 +496,8 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
         and(En28_W1, Load_Enable_Decoder_Out[28], Current_Window_Decoder_Out[1]);
         or(wR36_Ld_In, En12_W2, En28_W1);
 
-        and(Clr12_W2, Register_Clear_Decoder_Out[12], Current_Window_Decoder_Out[2]);
-        and(Clr28_W1, Register_Clear_Decoder_Out[28], Current_Window_Decoder_Out[1]);
+        and(Clr12_W2, RF_Clear_Enable, Current_Window_Decoder_Out[2]);
+        and(Clr28_W1, RF_Clear_Enable, Current_Window_Decoder_Out[1]);
         or(wR36_Clr_In, Clr12_W2, Clr28_W1);
 
         Register_32Bits R36(wR36_Out, PortC, Clk, wR36_Clr_In, wR36_Ld_In);
@@ -517,8 +509,8 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
         and(En29_W1, Load_Enable_Decoder_Out[29], Current_Window_Decoder_Out[1]);
         or(wR37_Ld_In, En13_W2, En29_W1);
 
-        and(Clr13_W2, Register_Clear_Decoder_Out[13], Current_Window_Decoder_Out[2]);
-        and(Clr29_W1, Register_Clear_Decoder_Out[29], Current_Window_Decoder_Out[1]);
+        and(Clr13_W2, RF_Clear_Enable, Current_Window_Decoder_Out[2]);
+        and(Clr29_W1, RF_Clear_Enable, Current_Window_Decoder_Out[1]);
         or(wR37_Clr_In, Clr13_W2, Clr29_W1);
 
         Register_32Bits R37(wR37_Out, PortC, Clk, wR37_Clr_In, wR37_Ld_In);
@@ -530,8 +522,8 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
         and(En30_W1, Load_Enable_Decoder_Out[30], Current_Window_Decoder_Out[1]);
         or(wR38_Ld_In, En14_W2, En30_W1);
 
-        and(Clr14_W2, Register_Clear_Decoder_Out[14], Current_Window_Decoder_Out[2]);
-        and(Clr30_W1, Register_Clear_Decoder_Out[30], Current_Window_Decoder_Out[1]);
+        and(Clr14_W2, RF_Clear_Enable, Current_Window_Decoder_Out[2]);
+        and(Clr30_W1, RF_Clear_Enable, Current_Window_Decoder_Out[1]);
         or(wR38_Clr_In, Clr14_W2, Clr30_W1);
 
         Register_32Bits R38(wR38_Out, PortC, Clk, wR38_Clr_In, wR38_Ld_In);
@@ -543,8 +535,8 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
         and(En31_W1, Load_Enable_Decoder_Out[31], Current_Window_Decoder_Out[1]);
         or(wR39_Ld_In, En15_W2, En31_W1);
 
-        and(Clr15_W2, Register_Clear_Decoder_Out[15], Current_Window_Decoder_Out[2]);
-        and(Clr31_W1, Register_Clear_Decoder_Out[31], Current_Window_Decoder_Out[1]);
+        and(Clr15_W2, RF_Clear_Enable, Current_Window_Decoder_Out[2]);
+        and(Clr31_W1, RF_Clear_Enable, Current_Window_Decoder_Out[1]);
         or(wR39_Clr_In, Clr15_W2, Clr31_W1);
 
         Register_32Bits R39(wR39_Out, PortC, Clk, wR39_Clr_In, wR39_Ld_In);
@@ -557,56 +549,56 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
 //----------------------------------
 
         and(wR40_Ld_In, Load_Enable_Decoder_Out[16], Current_Window_Decoder_Out[2]);
-        and(wR40_Clr_In, Register_Clear_Decoder_Out[16], Current_Window_Decoder_Out[2]);
+        and(wR40_Clr_In, RF_Clear_Enable, Current_Window_Decoder_Out[2]);
 
         Register_32Bits R40(wR40_Out, PortC, Clk, wR40_Clr_In, wR40_Ld_In);
 
 
 
         and(wR41_Ld_In, Load_Enable_Decoder_Out[17], Current_Window_Decoder_Out[2]);
-        and(wR41_Clr_In, Register_Clear_Decoder_Out[17], Current_Window_Decoder_Out[2]);
+        and(wR41_Clr_In, RF_Clear_Enable, Current_Window_Decoder_Out[2]);
 
         Register_32Bits R41(wR41_Out, PortC, Clk, wR41_Clr_In, wR41_Ld_In);
 
 
 
         and(wR42_Ld_In, Load_Enable_Decoder_Out[18], Current_Window_Decoder_Out[2]);
-        and(wR42_Clr_In, Register_Clear_Decoder_Out[18], Current_Window_Decoder_Out[2]);
+        and(wR42_Clr_In, RF_Clear_Enable, Current_Window_Decoder_Out[2]);
 
         Register_32Bits R42(wR42_Out, PortC, Clk, wR42_Clr_In, wR42_Ld_In);
 
 
 
         and(wR43_Ld_In, Load_Enable_Decoder_Out[19], Current_Window_Decoder_Out[2]);
-        and(wR43_Clr_In, Register_Clear_Decoder_Out[19], Current_Window_Decoder_Out[2]);
+        and(wR43_Clr_In, RF_Clear_Enable, Current_Window_Decoder_Out[2]);
 
         Register_32Bits R43(wR43_Out, PortC, Clk, wR43_Clr_In, wR43_Ld_In);
 
 
 
         and(wR44_Ld_In, Load_Enable_Decoder_Out[20], Current_Window_Decoder_Out[2]);
-        and(wR44_Clr_In, Register_Clear_Decoder_Out[20], Current_Window_Decoder_Out[2]);
+        and(wR44_Clr_In, RF_Clear_Enable, Current_Window_Decoder_Out[2]);
 
         Register_32Bits R44(wR44_Out, PortC, Clk, wR44_Clr_In, wR44_Ld_In);
 
 
 
         and(wR45_Ld_In, Load_Enable_Decoder_Out[21], Current_Window_Decoder_Out[2]);
-        and(wR45_Clr_In, Register_Clear_Decoder_Out[21], Current_Window_Decoder_Out[2]);
+        and(wR45_Clr_In, RF_Clear_Enable, Current_Window_Decoder_Out[2]);
 
         Register_32Bits R45(wR45_Out, PortC, Clk, wR45_Clr_In, wR45_Ld_In);
 
 
 
         and(wR46_Ld_In, Load_Enable_Decoder_Out[22], Current_Window_Decoder_Out[2]);
-        and(wR46_Clr_In, Register_Clear_Decoder_Out[22], Current_Window_Decoder_Out[2]);
+        and(wR46_Clr_In, RF_Clear_Enable, Current_Window_Decoder_Out[2]);
 
         Register_32Bits R46(wR46_Out, PortC, Clk, wR46_Clr_In, wR46_Ld_In);
 
 
 
         and(wR47_Ld_In, Load_Enable_Decoder_Out[23], Current_Window_Decoder_Out[2]);
-        and(wR47_Clr_In, Register_Clear_Decoder_Out[23], Current_Window_Decoder_Out[2]);
+        and(wR47_Clr_In, RF_Clear_Enable, Current_Window_Decoder_Out[2]);
 
         Register_32Bits R47(wR47_Out, PortC, Clk, wR47_Clr_In, wR47_Ld_In);
 
@@ -620,8 +612,8 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
         and(En24_W0, Load_Enable_Decoder_Out[24], Current_Window_Decoder_Out[0]);
         or(wR48_Ld_In, En8_W1, En24_W0);
 
-        and(Clr8_W1, Register_Clear_Decoder_Out[8], Current_Window_Decoder_Out[1]);
-        and(Clr24_W0, Register_Clear_Decoder_Out[24], Current_Window_Decoder_Out[0]);
+        and(Clr8_W1, RF_Clear_Enable, Current_Window_Decoder_Out[1]);
+        and(Clr24_W0, RF_Clear_Enable, Current_Window_Decoder_Out[0]);
         or(wR48_Clr_In, Clr8_W1, Clr24_W0);
 
         Register_32Bits R48(wR48_Out, PortC, Clk, wR48_Clr_In, wR48_Ld_In);
@@ -633,8 +625,8 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
         and(En25_W0, Load_Enable_Decoder_Out[25], Current_Window_Decoder_Out[0]);
         or(wR49_Ld_In, En9_W1, En25_W0);
 
-        and(Clr9_W1, Register_Clear_Decoder_Out[9], Current_Window_Decoder_Out[1]);
-        and(Clr25_W0, Register_Clear_Decoder_Out[25], Current_Window_Decoder_Out[0]);
+        and(Clr9_W1, RF_Clear_Enable, Current_Window_Decoder_Out[1]);
+        and(Clr25_W0, RF_Clear_Enable, Current_Window_Decoder_Out[0]);
         or(wR49_Clr_In, Clr9_W1, Clr25_W0);
 
         Register_32Bits R49(wR49_Out, PortC, Clk, wR49_Clr_In, wR49_Ld_In);
@@ -646,8 +638,8 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
         and(En26_W0, Load_Enable_Decoder_Out[26], Current_Window_Decoder_Out[0]);
         or(wR50_Ld_In, En10_W1, En26_W0);
 
-        and(Clr10_W1, Register_Clear_Decoder_Out[10], Current_Window_Decoder_Out[1]);
-        and(Clr26_W0, Register_Clear_Decoder_Out[26], Current_Window_Decoder_Out[0]);
+        and(Clr10_W1, RF_Clear_Enable, Current_Window_Decoder_Out[1]);
+        and(Clr26_W0, RF_Clear_Enable, Current_Window_Decoder_Out[0]);
         or(wR50_Clr_In, Clr10_W1, Clr26_W0);
 
         Register_32Bits R50(wR50_Out, PortC, Clk, wR50_Clr_In, wR50_Ld_In);
@@ -659,8 +651,8 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
         and(En27_W0, Load_Enable_Decoder_Out[27], Current_Window_Decoder_Out[0]);
         or(wR51_Ld_In, En11_W1, En27_W0);
 
-        and(Clr11_W1, Register_Clear_Decoder_Out[11], Current_Window_Decoder_Out[1]);
-        and(Clr27_W0, Register_Clear_Decoder_Out[27], Current_Window_Decoder_Out[0]);
+        and(Clr11_W1, RF_Clear_Enable, Current_Window_Decoder_Out[1]);
+        and(Clr27_W0, RF_Clear_Enable, Current_Window_Decoder_Out[0]);
         or(wR51_Clr_In, Clr11_W1, Clr27_W0);
 
         Register_32Bits R51(wR51_Out, PortC, Clk, wR51_Clr_In, wR51_Ld_In);
@@ -672,8 +664,8 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
         and(En28_W0, Load_Enable_Decoder_Out[28], Current_Window_Decoder_Out[0]);
         or(wR52_Ld_In, En12_W1, En28_W0);
 
-        and(Clr12_W1, Register_Clear_Decoder_Out[12], Current_Window_Decoder_Out[1]);
-        and(Clr28_W0, Register_Clear_Decoder_Out[28], Current_Window_Decoder_Out[0]);
+        and(Clr12_W1, RF_Clear_Enable, Current_Window_Decoder_Out[1]);
+        and(Clr28_W0, RF_Clear_Enable, Current_Window_Decoder_Out[0]);
         or(wR52_Clr_In, Clr12_W1, Clr28_W0);
 
         Register_32Bits R52(wR52_Out, PortC, Clk, wR52_Clr_In, wR52_Ld_In);
@@ -685,8 +677,8 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
         and(En29_W0, Load_Enable_Decoder_Out[29], Current_Window_Decoder_Out[0]);
         or(wR53_Ld_In, En13_W1, En29_W0);
 
-        and(Clr13_W1, Register_Clear_Decoder_Out[13], Current_Window_Decoder_Out[1]);
-        and(Clr29_W0, Register_Clear_Decoder_Out[29], Current_Window_Decoder_Out[0]);
+        and(Clr13_W1, RF_Clear_Enable, Current_Window_Decoder_Out[1]);
+        and(Clr29_W0, RF_Clear_Enable, Current_Window_Decoder_Out[0]);
         or(wR53_Clr_In, Clr13_W1, Clr29_W0);
 
         Register_32Bits R53(wR53_Out, PortC, Clk, wR53_Clr_In, wR53_Ld_In);
@@ -697,8 +689,8 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
         and(En30_W0, Load_Enable_Decoder_Out[30], Current_Window_Decoder_Out[0]);
         or(wR54_Ld_In, En14_W1, En30_W0);
 
-        and(Clr14_W1, Register_Clear_Decoder_Out[14], Current_Window_Decoder_Out[1]);
-        and(Clr30_W0, Register_Clear_Decoder_Out[30], Current_Window_Decoder_Out[0]);
+        and(Clr14_W1, RF_Clear_Enable, Current_Window_Decoder_Out[1]);
+        and(Clr30_W0, RF_Clear_Enable, Current_Window_Decoder_Out[0]);
         or(wR54_Clr_In, Clr14_W1, Clr30_W0);
 
         Register_32Bits R54(wR54_Out, PortC, Clk, wR54_Clr_In, wR54_Ld_In);
@@ -710,8 +702,8 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
         and(En31_W0, Load_Enable_Decoder_Out[31], Current_Window_Decoder_Out[0]);
         or(wR55_Ld_In, En15_W1, En31_W0);
 
-        and(Clr15_W1, Register_Clear_Decoder_Out[15], Current_Window_Decoder_Out[1]);
-        and(Clr31_W0, Register_Clear_Decoder_Out[31], Current_Window_Decoder_Out[0]);
+        and(Clr15_W1, RF_Clear_Enable, Current_Window_Decoder_Out[1]);
+        and(Clr31_W0, RF_Clear_Enable, Current_Window_Decoder_Out[0]);
         or(wR55_Clr_In, Clr15_W1, Clr31_W0);
 
         Register_32Bits R55(wR55_Out, PortC, Clk, wR55_Clr_In, wR55_Ld_In);
@@ -723,56 +715,56 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
 //--------------------------------
 
         and(wR56_Ld_In, Load_Enable_Decoder_Out[16], Current_Window_Decoder_Out[1]);
-        and(wR56_Clr_In, Register_Clear_Decoder_Out[16], Current_Window_Decoder_Out[1]);
+        and(wR56_Clr_In, RF_Clear_Enable, Current_Window_Decoder_Out[1]);
 
         Register_32Bits R56(wR56_Out, PortC, Clk, wR56_Clr_In, wR56_Ld_In);
 
 
 
         and(wR57_Ld_In, Load_Enable_Decoder_Out[17], Current_Window_Decoder_Out[1]);
-        and(wR57_Clr_In, Register_Clear_Decoder_Out[17], Current_Window_Decoder_Out[1]);
+        and(wR57_Clr_In, RF_Clear_Enable, Current_Window_Decoder_Out[1]);
 
         Register_32Bits R57(wR57_Out, PortC, Clk, wR57_Clr_In, wR57_Ld_In);
 
 
 
         and(wR58_Ld_In, Load_Enable_Decoder_Out[18], Current_Window_Decoder_Out[1]);
-        and(wR58_Clr_In, Register_Clear_Decoder_Out[18], Current_Window_Decoder_Out[1]);
+        and(wR58_Clr_In, RF_Clear_Enable, Current_Window_Decoder_Out[1]);
 
         Register_32Bits R58(wR58_Out, PortC, Clk, wR58_Clr_In, wR58_Ld_In);
 
 
 
         and(wR59_Ld_In, Load_Enable_Decoder_Out[19], Current_Window_Decoder_Out[1]);
-        and(wR59_Clr_In, Register_Clear_Decoder_Out[19], Current_Window_Decoder_Out[1]);
+        and(wR59_Clr_In, RF_Clear_Enable, Current_Window_Decoder_Out[1]);
 
         Register_32Bits R59(wR59_Out, PortC, Clk, wR59_Clr_In, wR59_Ld_In);
 
 
 
         and(wR60_Ld_In, Load_Enable_Decoder_Out[20], Current_Window_Decoder_Out[1]);
-        and(wR60_Clr_In, Register_Clear_Decoder_Out[20], Current_Window_Decoder_Out[1]);
+        and(wR60_Clr_In, RF_Clear_Enable, Current_Window_Decoder_Out[1]);
 
         Register_32Bits R60(wR60_Out, PortC, Clk, wR60_Clr_In, wR60_Ld_In);
 
 
 
         and(wR61_Ld_In, Load_Enable_Decoder_Out[21], Current_Window_Decoder_Out[1]);
-        and(wR61_Clr_In, Register_Clear_Decoder_Out[21], Current_Window_Decoder_Out[1]);
+        and(wR61_Clr_In, RF_Clear_Enable, Current_Window_Decoder_Out[1]);
 
         Register_32Bits R61(wR61_Out, PortC, Clk, wR61_Clr_In, wR61_Ld_In);
 
 
 
         and(wR62_Ld_In, Load_Enable_Decoder_Out[22], Current_Window_Decoder_Out[1]);
-        and(wR62_Clr_In, Register_Clear_Decoder_Out[22], Current_Window_Decoder_Out[1]);
+        and(wR62_Clr_In, RF_Clear_Enable, Current_Window_Decoder_Out[1]);
 
         Register_32Bits R62(wR62_Out, PortC, Clk, wR62_Clr_In, wR62_Ld_In);
 
 
 
         and(wR63_Ld_In, Load_Enable_Decoder_Out[23], Current_Window_Decoder_Out[1]);
-        and(wR63_Clr_In, Register_Clear_Decoder_Out[23], Current_Window_Decoder_Out[1]);
+        and(wR63_Clr_In, RF_Clear_Enable, Current_Window_Decoder_Out[1]);
 
         Register_32Bits R63(wR63_Out, PortC, Clk, wR63_Clr_In, wR63_Ld_In);
 
@@ -783,56 +775,56 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
 //------------------------------
 
         and(wR64_Ld_In, Load_Enable_Decoder_Out[16], Current_Window_Decoder_Out[0]);
-        and(wR64_Clr_In, Register_Clear_Decoder_Out[16], Current_Window_Decoder_Out[0]);
+        and(wR64_Clr_In, RF_Clear_Enable, Current_Window_Decoder_Out[0]);
 
         Register_32Bits R64(wR64_Out, PortC, Clk, wR64_Clr_In, wR64_Ld_In);
 
 
 
         and(wR65_Ld_In, Load_Enable_Decoder_Out[17], Current_Window_Decoder_Out[0]);
-        and(wR65_Clr_In, Register_Clear_Decoder_Out[17], Current_Window_Decoder_Out[0]);
+        and(wR65_Clr_In, RF_Clear_Enable, Current_Window_Decoder_Out[0]);
 
         Register_32Bits R65(wR65_Out, PortC, Clk, wR65_Clr_In, wR65_Ld_In);
 
 
 
         and(wR66_Ld_In, Load_Enable_Decoder_Out[18], Current_Window_Decoder_Out[0]);
-        and(wR66_Clr_In, Register_Clear_Decoder_Out[18], Current_Window_Decoder_Out[0]);
+        and(wR66_Clr_In, RF_Clear_Enable, Current_Window_Decoder_Out[0]);
 
         Register_32Bits R66(wR66_Out, PortC, Clk, wR66_Clr_In, wR66_Ld_In);
 
 
 
         and(wR67_Ld_In, Load_Enable_Decoder_Out[19], Current_Window_Decoder_Out[0]);
-        and(wR67_Clr_In, Register_Clear_Decoder_Out[19], Current_Window_Decoder_Out[0]);
+        and(wR67_Clr_In, RF_Clear_Enable, Current_Window_Decoder_Out[0]);
 
         Register_32Bits R67(wR67_Out, PortC, Clk, wR67_Clr_In, wR67_Ld_In);
 
 
 
         and(wR68_Ld_In, Load_Enable_Decoder_Out[20], Current_Window_Decoder_Out[0]);
-        and(wR68_Clr_In, Register_Clear_Decoder_Out[20], Current_Window_Decoder_Out[0]);
+        and(wR68_Clr_In, RF_Clear_Enable, Current_Window_Decoder_Out[0]);
 
         Register_32Bits R68(wR68_Out, PortC, Clk, wR68_Clr_In, wR68_Ld_In);
 
 
 
         and(wR69_Ld_In, Load_Enable_Decoder_Out[21], Current_Window_Decoder_Out[0]);
-        and(wR69_Clr_In, Register_Clear_Decoder_Out[21], Current_Window_Decoder_Out[0]);
+        and(wR69_Clr_In, RF_Clear_Enable, Current_Window_Decoder_Out[0]);
 
         Register_32Bits R69(wR69_Out, PortC, Clk, wR69_Clr_In, wR69_Ld_In);
 
 
 
         and(wR70_Ld_In, Load_Enable_Decoder_Out[22], Current_Window_Decoder_Out[0]);
-        and(wR70_Clr_In, Register_Clear_Decoder_Out[22], Current_Window_Decoder_Out[0]);
+        and(wR70_Clr_In, RF_Clear_Enable, Current_Window_Decoder_Out[0]);
 
         Register_32Bits R70(wR70_Out, PortC, Clk, wR70_Clr_In, wR70_Ld_In);
 
 
 
         and(wR71_Ld_In, Load_Enable_Decoder_Out[23], Current_Window_Decoder_Out[0]);
-        and(wR71_Clr_In, Register_Clear_Decoder_Out[23], Current_Window_Decoder_Out[0]);
+        and(wR71_Clr_In, RF_Clear_Enable, Current_Window_Decoder_Out[0]);
 
         Register_32Bits R71(wR71_Out, PortC, Clk, wR71_Clr_In, wR71_Ld_In);
 
