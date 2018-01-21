@@ -50,13 +50,13 @@ join
 
 //Clock Setup
 initial begin
-        Clk = 1'b0;
+        #115 Clk = 1'b0;
         forever #5 Clk = ~Clk;
 end
 
 initial begin
-	$display("wMAROut          wIROut				Time");
-        $monitor("%d	%h	%d", wMAROut, wIROut, $time);
+	$display("State wMAROut          wIROut				Time");
+        $monitor("%d  %d	%h	%d",State, wMAROut, wIROut, $time);
 end
 
 endmodule
