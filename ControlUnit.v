@@ -611,113 +611,218 @@ endmodule
 
 module ControlSignalEncoder(output reg reg_win_en, rf_load_en, rf_clear_en, output reg ir_ld, mar_ld, mdr_ld, wim_ld, tbr_ld, ttr_ld, pc_ld, npc_ld, npc_clr, psr_ld, r_w, mov, output reg [1:0] type, output reg fr_ld, output reg [1:0] ma, mb, output reg mc, mf, mm, output reg [1:0] mnp, output reg mop, output reg [1:0] mp, output reg msa, output reg [1:0] msc, output reg [5:0] opxx, input [6:0] State);
 always @ (State)
-case (State)
-7'b0000000: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 1;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 1; npc_ld = 0; npc_clr=1; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 0; mc = 0; mf = 0; mm = 0; mnp  = 0; mop = 0; mp = 0; msa = 0; msc = 0; opxx = 6'b000000;
+	case (State)
+7'b0000000: 
+begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 1;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 1; npc_ld = 0; npc_clr=1; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 0; mc = 0; mf = 0; mm = 0; mnp  = 0; mop = 0; mp = 0; msa = 0; msc = 0; opxx = 6'b000000;
 end
+
+
 7'b0000001: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 1; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 2'b10; mc = 0; mf = 0; mm = 0; mnp = 2'b11; mop = 1; mp = 0; msa = 0; msc = 0; opxx = 6'b100001;
 end
+
+
 7'b0000010: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0; ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 1; npc_ld = 1; npc_clr=0; psr_ld = 0;  r_w = 1; mov = 1; type = 2'b10; fr_ld = 0; ma = 0; mb = 0; mc = 0; mf = 0; mm = 0; mnp  = 0; mop = 0; mp = 2'b11; msa = 0; msc = 0; opxx = 6'b000000;
 end
+
+
 7'b0000011: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 1; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 1; mov = 1; type = 2'b10; fr_ld = 0; ma = 0; mb = 0; mc = 0; mf = 0; mm = 0; mnp  = 0; mop = 0; mp = 0; msa = 0; msc = 0; opxx = 6'b000000;
 end
+
+
 7'b0000100: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 0; mc = 0; mf = 0; mm = 0; mnp  = 0; mop = 0; mp = 0; msa = 0; msc = 0; opxx = 6'b000000;
 end
+
+
 7'b0001010: begin reg_win_en = 1; rf_load_en = 1; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0;ma = 0; mb = 0; mc = 0; mf = 0; mm = 0; mnp  = 0; mop = 0; mp = 0; msa = 0; msc = 0; opxx = 6'b000000;
 end
+
+
 7'b0001011: begin reg_win_en = 1; rf_load_en = 1; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 2'b01; mc = 0; mf = 0; mm = 0; mnp  = 0; mop = 0; mp = 0; msa = 0; msc = 0; opxx = 6'b000000;
 end
+
+
 7'b0001100: begin reg_win_en = 1; rf_load_en = 1; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 1; ma = 0; mb = 0; mc = 0; mf = 0; mm = 0; mnp = 0; mop = 0; mp = 0; msa = 0; msc = 0; opxx = 6'b000000;
 end
+
+
 7'b0001101: begin reg_win_en = 1; rf_load_en = 1; rf_clear_en = 0; ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 1; ma = 0; mb = 2'b01; mc = 0; mf = 0; mm = 0; mnp = 0; mop = 0; mp = 0; msa = 0; msc = 0; opxx = 6'b000000;
 end
+
+
 7'b0001110: begin reg_win_en = 1; rf_load_en = 1; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 2'b10; mc = 0; mf = 0; mm = 0; mnp = 0; mop = 1; mp = 0; msa = 0; msc = 0; opxx = 6'b000000;
 end
+
+
 7'b0010100: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 1; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 1; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 0; mc = 0; mf = 0; mm = 0; mnp = 0; mop = 1; mp = 0; msa = 0; msc = 0; opxx = 6'b000000;
 end
+
+
 7'b0010101: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 1; mov = 1; type = 0; fr_ld = 0; ma = 0; mb = 0; mc = 0; mf = 0; mm = 0; mnp = 0; mop = 0; mp = 0; msa = 0; msc = 0; opxx = 6'b000000;
 end
+
+
 7'b0010110: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 1; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 1; mov = 1; type = 0; fr_ld = 0; ma = 0; mb = 0; mc = 0; mf = 0; mm = 0; mnp = 0; mop = 0; mp = 0; msa = 0; msc = 0; opxx = 6'b000000;
 end
+
+
 7'b0010111: begin reg_win_en = 1; rf_load_en = 1; rf_clear_en = 0; ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 2'b11; mc = 0; mf = 0; mm = 0; mnp = 0; mop = 1; mp = 0; msa = 0; msc = 0; opxx = 6'b100001;
 end
+
+
 7'b0011001: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 1; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 1; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 0; mc = 0; mf = 0; mm = 1; mnp = 0; mop = 1; mp = 0; msa = 0; msc = 0; opxx = 6'b000000;
 end
+
+
 7'b0011010: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 1; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 0; mc = 0; mf = 0; mm = 1; mnp = 0; mop = 1; mp = 0; msa = 1; msc = 0; opxx = 6'b100000;
 end
+
+
 7'b0011011: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 1; type = 0; fr_ld = 0; ma = 0; mb = 0; mc = 0; mf = 0; mm = 0; mnp = 0; mop = 0; mp = 0; msa = 0; msc = 0; opxx = 6'b000000;
 end
+
+
 7'b0011100: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 1; type = 0; fr_ld = 0; ma = 0; mb = 0; mc = 0; mf = 0; mm = 0; mnp = 0; mop = 0; mp = 0; msa = 0; msc = 0; opxx = 6'b000000;
 end
+
+
 7'b0011110: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 1; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 1; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 2'b01; mc = 0; mf = 0; mm = 0; mnp = 0; mop = 1; mp = 0; msa = 0; msc = 0; opxx = 6'b000000;
 end
+
+
 7'b0100011: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 1; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 1; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 2'b01; mc = 0; mf = 0; mm = 1; mnp = 0; mop = 1; mp = 0; msa = 0; msc = 0; opxx = 6'b000000;
 end
+
+
 7'b0101000: begin reg_win_en = 1; rf_load_en = 1; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 2'b10; mc = 0; mf = 0; mm = 0; mnp = 0; mop = 1; mp = 0; msa = 0; msc = 2'b01; opxx = 6'b100001;
 end
+
+
 7'b0101001: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 1; npc_ld = 1; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 0; mc = 0; mf = 0; mm = 0; mnp  = 2'b10; mop = 0; mp = 2'b11; msa = 0; msc = 0; opxx = 6'b000000;
 end
+
+
 7'b0101010: begin reg_win_en = 1; rf_load_en = 1; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 2'b10; mc = 0; mf = 0; mm = 0; mnp = 0; mop = 1; mp = 0; msa = 0; msc = 0; opxx = 6'b100001;
 end
+
+
 7'b0101011: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 1; npc_ld = 1; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 0; mc = 0; mf = 0; mm = 0; mnp = 0; mop = 0; mp = 2'b11;  msa = 0; msc = 0; opxx = 6'b000000;
 end
+
+
 7'b0101100: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 1; npc_ld = 1; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 2'b01; mc = 0; mf = 0; mm = 0; mnp  = 0; mop = 0; mp = 2'b11; msa = 0; msc = 0; opxx = 6'b000000;
 end
+
+
 7'b0101101: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 1; npc_ld = 1; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 0; mc = 0; mf = 0; mm = 0; mnp  = 0; mop = 0; mp = 2'b11; msa = 0; msc = 0; opxx = 6'b000000;
 end
+
+
 7'b0101110: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 1; npc_ld = 1; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 2'b01; mc = 0; mf = 0; mm = 0; mnp  = 0; mop = 0; mp = 2'b11; msa = 0; msc = 0; opxx = 6'b000000;
 end
+
+
 7'b0101111: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 1;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 2'b01; mb = 0; mc = 0; mf = 0; mm = 0; mnp  = 0;  mop = 1; mp = 0;  msa = 0; msc = 0; opxx = 6'b100100;
 end
+
+
 7'b0110010: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 1; npc_ld = 1; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 0; mc = 0; mf = 0; mm = 0; mnp = 2'b10; mop = 0; mp = 2'b11; msa = 0; msc = 0; opxx = 6'b000000;
 end
 7'b0110011: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 1; npc_ld = 1; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 0; mc = 0; mf = 0; mm = 0; mnp = 2'b11; mop = 0; mp = 2'b11; msa = 0; msc = 0; opxx = 6'b000000;
 end
+
+
 7'b0110100: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 1; npc_ld = 1; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 0; mc = 0; mf = 0; mm = 0; mnp = 2'b01; mop = 0; mp = 2'b10; msa = 0; msc = 0; opxx = 6'b000000;
 end
+
+
 7'b0110101: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 1; npc_ld = 1; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 0; mc = 0; mf = 0; mm = 0; mnp = 2'b10; mop = 0; mp = 2'b11; msa = 0; msc = 0; opxx = 6'b000000;
 end
+
+
 7'b0110110: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 1; npc_ld = 1; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 0; mc = 0; mf = 0; mm = 0; mnp = 2'b01; mop = 0; mp = 2'b10; msa = 0; msc = 0;  opxx = 6'b000000;
 end
+
+
 7'b0111100: begin reg_win_en = 1; rf_load_en = 1; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 2'b01; mb = 0; mc = 0; mf = 0; mm = 0; mnp = 0; mop = 0; mp = 0; msa = 0; msc = 0;  opxx = 6'b000000;
 end
+
+
 7'b0111101: begin reg_win_en = 1; rf_load_en = 1; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 2'b10; mb = 0; mc = 0; mf = 0; mm = 0; mnp = 0; mop = 0; mp = 0; msa = 0; msc = 0; opxx = 6'b000000;
 end
+
+
 7'b0111110: begin reg_win_en = 1; rf_load_en = 1; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 2'b11; mb = 0; mc = 0; mf = 0; mm = 0; mnp = 0; mop = 0; mp = 0; msa = 0; msc = 0;  opxx = 6'b000000;
 end
+
+
 7'b0111111: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 1;  r_w = 0; mov = 0; type = 0; fr_ld = 1; ma = 0; mb = 0; mc = 0; mf = 1; mm = 0; mnp = 0; mop = 0; mp = 0; msa = 0; msc = 0; opxx = 6'b000000;
 end
+
+
 7'b1000000: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 1;  r_w = 0; mov = 0; type = 0; fr_ld = 1; ma = 0; mb = 2'b01; mc = 0; mf = 1; mm = 0; mnp = 0; mop = 0; mp = 0; msa = 0; msc = 0;  opxx = 6'b000000;
 end
+
+
 7'b1000001: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 1; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 0; mc = 0; mf = 0; mm = 0; mnp = 0; mop = 0; mp = 0; msa = 0; msc = 0; opxx = 6'b000000;
 end
+
+
 7'b1000010: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 1; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 2'b01;  mc = 0; mf = 0; mm = 0; mnp = 0; mop = 0; mp = 0; msa = 0; msc = 0; opxx = 6'b000000;
 end
+
+
 7'b1000011: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 1; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 0; mc = 0; mf = 0; mm = 0; mnp = 0; mop = 0; mp = 0; msa = 0; msc = 0; opxx = 6'b000000;
 end
+
+
 7'b1000100: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 1; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 2'b01; mc = 0; mf = 0; mm = 0; mnp = 0; mop = 0; mp = 0; msa = 0; msc = 0; opxx = 6'b000000;
 end
+
+
 7'b1000110: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 1;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 2'b01; mb = 0; mc = 0; mf = 0; mm = 0; mnp = 0; mop = 1; mp = 0; msa = 0; msc = 0; opxx = 6'b100010;
 end
+
+
 7'b1000111: begin reg_win_en = 1; rf_load_en = 1; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 0; mc = 0; mf = 0; mm = 0; mnp = 0; mop = 0; mp = 0; msa = 0; msc = 0; opxx = 6'b000000;
 end
+
+
 7'b1001000: begin reg_win_en = 1; rf_load_en = 1; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 2'b01; mc = 0; mf = 0; mm = 0; mnp = 0; mop = 0; mp = 0; msa = 0; msc = 0;  opxx = 6'b000000;
 end
+
+
 7'b1001001: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 1;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 2'b01; mb = 0; mc = 0; mf = 0; mm = 0; mnp = 0; mop = 1; mp = 0; msa = 0; msc = 0;  opxx = 6'b100011;
 end
+
+
 7'b1001010: begin reg_win_en = 1; rf_load_en = 1; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 0; mc = 0; mf = 0; mm = 0; mnp = 0; mop = 0; mp = 0; msa = 0; msc = 0;  opxx = 6'b000000;
 end
+
+
 7'b1001011: begin reg_win_en = 1; rf_load_en = 1; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 2'b01; mc = 0; mf = 0; mm = 0; mnp = 0; mop = 0; mp = 0; msa = 0; msc = 0;  opxx = 6'b000000;
 end
+
+
 7'b1010000: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 1; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma =0; mb = 0; mc = 0; mf = 0; mm = 0; mnp = 0; mop = 0; mp = 0; msa = 0; msc = 0;  opxx = 6'b000000;
 end
+
+
 7'b1010001: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 1; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 2'b01; mc = 0; mf = 0; mm = 0; mnp = 0; mop = 0; mp = 0; msa = 0; msc = 0; opxx = 6'b000000;
 end
+
+
 7'b1010010: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 1;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 2'b01; mb = 0; mc = 0; mf = 0; mm = 0; mnp = 0; mop = 1; mp = 0; msa = 0; msc = 0;  opxx = 6'b100101;
 end
+
+
 7'b1010011: begin reg_win_en = 1; rf_load_en = 1; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 2'b10; mc = 0; mf = 0; mm = 0; mnp = 0; mop = 1; mp = 0; msa = 0; msc = 2'b10; opxx = 6'b100001;
 end
+
+
 7'b1010100: begin reg_win_en = 1; rf_load_en = 1; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 2'b10; mc = 1; mf = 0; mm = 0; mnp = 0; mop = 1; mp = 0; msa = 0; msc = 2'b11; opxx = 6'b100001;
 end
+
+
 7'b1010101: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 1; npc_ld = 1; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 0; mc = 0; mf = 0; mm = 0; mnp = 2'b10; mop = 0; mp = 2'b01; msa = 0; msc = 0; opxx = 6'b000000;
 end
 endcase
