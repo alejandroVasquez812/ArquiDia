@@ -1,9 +1,10 @@
-`include "SPARC_DataPath.v"
+`include "SPARC_Datapath.v"
 module TestDataPath;
 
 //Inputs
+reg[7:0] Data;
 reg [5:0] OpXX, Clear_Select;
-reg[1:0]type, MA, MB, MNP, MP, MS;
+reg[1:0]type, MA, MB, MNP, MP, MS, MSc;
 reg IR_Ld, MAR_Ld, MDR_Ld, WIM_Ld, TBR_Ld, TTR_Ld, PC_Ld, NPC_Ld, nPC_Clr, PSR_Ld, FR_Ld, RW, MOV, MC, MF, MM, MOP, MSa, 
 	Register_Windows_Enable, RF_Load_Enable, RF_Clear_Enable, Clk;
 
@@ -12,19 +13,38 @@ reg IR_Ld, MAR_Ld, MDR_Ld, WIM_Ld, TBR_Ld, TTR_Ld, PC_Ld, NPC_Ld, nPC_Clr, PSR_L
 wire [31:0] wIROut, wMAROut;
 wire MOC, BCOND, TCOND;
 
+//File variables
+integer fi,fo,code,i; 
 
-	DataPath DP(wIROut, wMAROut, MOC, BCOND, TCOND, Register_Windows_Enable, RF_Load_Enable, RF_Clear_Enable, Clear_Select, IR_Ld,
+	DataPath DP(wIROut, wMAROut, MOC, BCOND, TCOND, Register_Windows_Enable, RF_Load_Enable, RF_Clear_Enable, IR_Ld,
 	MAR_Ld, MDR_Ld, WIM_Ld, TBR_Ld, TTR_Ld, PC_Ld, NPC_Ld, nPC_Clr, PSR_Ld, RW, MOV, type, FR_Ld, MA, 
 	MB, MC, MF, MM, MNP, MOP, MP, MSa, MSc, OpXX, Clk);
 
 
 
+initial begin
+		//Preload RAM with input file
+		RW=1'b0;
+		type=0;
+		DP.MAR.Q=7'b0000000;
+		fi=$fopen("input.txt","r");
+		while(!$feof(fi))begin
+			code = $fscanf(fi, "%b", Data);
+			MOV=0;
+                        DP.MDR.Q = Data;
+			#1 MOV=1'b1;
+			#1 DP.MAR.Q=DP.MAR.Q+1;
+		end
+		$fclose(fi);
+
+
+end
+/*
 initial fork
 	//Store State 25
 	Register_Windows_Enable = 1'b1;
 	RF_Load_Enable = 1'b1;
 	RF_Clear_Enable = 1'b0;
-	Clear_Select = 5'b00000;
 	OpXX = 5'b00000;
 	IR_Ld = 1'b0;
 	MAR_Ld = 1'b1;
@@ -52,13 +72,12 @@ initial fork
 	MSc = 1'b0;
 
 join
-
+*/
 initial fork
 	//Reset State 0
 	Register_Windows_Enable = 1'b1;
 	RF_Load_Enable = 1'b1;
 	RF_Clear_Enable = 1'b1;
-	Clear_Select = 5'b00000;
 	OpXX = 5'b00000;
 	IR_Ld = 1'b0;
 	MAR_Ld = 1'b0;
@@ -85,6 +104,7 @@ initial fork
 	MSa = 1'b0;
 	MSc = 1'b0;
 join
+
 
 //Clock Setup
 initial begin
