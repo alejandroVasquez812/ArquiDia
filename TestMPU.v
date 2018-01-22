@@ -37,6 +37,7 @@ initial begin
 			#1 MPU.CU.CSE.mov=1'b1;
 			#1 MPU.DP.MAR.Q=MPU.DP.MAR.Q+1;
 		end
+		MPU.DP.MAR.Q=7'b0000000;
 		$fclose(fi);
 
 
