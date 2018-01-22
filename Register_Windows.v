@@ -151,10 +151,10 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
 	Register_32Bits R1(wR1_Out, PortC, Clk, RF_Clear_Enable, Load_Enable_Decoder_Out[1]);
 	Register_32Bits R2(wR2_Out, PortC, Clk, RF_Clear_Enable, Load_Enable_Decoder_Out[2]);
 	Register_32Bits R3(wR3_Out, PortC, Clk, RF_Clear_Enable, Load_Enable_Decoder_Out[3]);
-always@(wR1_Out, PortC, Clk, RF_Clear_Enable, Load_Enable_Decoder_Out[1])
-begin
-$display("Register %b PortC %b RF_Clear_Enable %b LoadE %b",wR1_Out, PortC, Clk, RF_Clear_Enable, Load_Enable_Decoder_Out[1]);
-end
+//always@(wR1_Out, PortC, Clk, RF_Clear_Enable, Load_Enable_Decoder_Out[1])
+//begin
+//$display("Register %b PortC %b Clk= %b RF_Clear_Enable= %b LoadSelect=%b RF_Load_Enable =%b LoadE %h",wR1_Out, PortC, Clk, RF_Clear_Enable, Load_Select,RF_Load_Enable, Load_Enable_Decoder_Out);
+//end
 
 	//R4-R7
 	Register_32Bits R4(wR4_Out, PortC, Clk, RF_Clear_Enable, Load_Enable_Decoder_Out[4]);
@@ -864,7 +864,7 @@ endmodule
 //	Decoder Modules
 //*****************************
 module Decoder_5x32(output reg [31:0] Eout, input [4:0] Ein, input Ld);
-always@(Ein)
+always@(Ein,Ld)
 	if(!Ld)
 		Eout = 0;
 	else

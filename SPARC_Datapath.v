@@ -42,6 +42,13 @@ wire[31:0] wALUOut, wDataOut, wIROut, wMAROut, wMDROut, wPCOut, wNPCOut, wShifte
 //	DataPath Registers
 //*********************************
 	Register_32Bits MAR(wMAROut, wALUOut, Clk, Gnd, MAR_Ld);
+
+always@(wMAROut, wALUOut, Clk, Gnd, MAR_Ld)
+begin
+$display("wMAROut= %b wALUOut= %b Clk= %b Gnd= %b MAR_Ld= %b",wMAROut, wALUOut, Clk, Gnd, MAR_Ld);
+end
+
+
 	Register_32Bits MDR(wMDROut, wMuxMOut, Clk, Gnd, MDR_Ld);
 
 
