@@ -151,7 +151,10 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
 	Register_32Bits R1(wR1_Out, PortC, Clk, RF_Clear_Enable, Load_Enable_Decoder_Out[1]);
 	Register_32Bits R2(wR2_Out, PortC, Clk, RF_Clear_Enable, Load_Enable_Decoder_Out[2]);
 	Register_32Bits R3(wR3_Out, PortC, Clk, RF_Clear_Enable, Load_Enable_Decoder_Out[3]);
-
+//always@(wR0_Out)
+//begin
+//$display("Register %b",wR0_Out);
+//end
 
 	//R4-R7
 	Register_32Bits R4(wR4_Out, PortC, Clk, RF_Clear_Enable, Load_Enable_Decoder_Out[4]);

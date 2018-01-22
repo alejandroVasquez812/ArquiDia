@@ -92,5 +92,6 @@ end
 6'b100100: Y={A[31:8],A[6],A[6],1'b1,A[4:0]+1'b1};
 6'b011111: Y={A[31:8],1'b1,A[7],1'b0,A[4:0]-1'b1};
 endcase
+//$display("Y = %d A= %d B=%d",Y,A,B);
 end
 endmodule

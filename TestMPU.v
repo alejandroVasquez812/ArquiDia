@@ -55,8 +55,8 @@ initial begin
 end
 
 initial begin
-	$display("State       wMAROut         wIROut		         Time");
-        $monitor("%d    %d	   %h	%d",State, wMAROut, wIROut, $time);
+	//$display("State       wMAROut         wIROut		         Time");
+      //  $monitor("%d    %d	   %h	%d",State, wMAROut, wIROut, $time);
 end
 
 endmodule
