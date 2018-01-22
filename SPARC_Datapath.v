@@ -60,6 +60,10 @@ wire[31:0] wALUOut, wDataOut, wIROut, wMAROut, wMDROut, wPCOut, wNPCOut, wShifte
 	and(wWIM_Ld, WIM_Ld, wPSROut[7]);
 	Register_32Bits WIM(wWIMOut, wALUOut, Clk, Gnd, WIM_Ld);
 
+//always@(wNPCOut, wMuxNPOut, Clk, nPC_Clr, NPC_Ld)
+//begin
+//$display("wNPCOut= %b wMuxNPOut= %b Clk= %b nPC_Clr= %b NPC_Ld= %b",wNPCOut, wMuxNPOut, Clk, nPC_Clr, NPC_Ld);
+//end
 
 	and(wTBR_Ld, TBR_Ld, wPSROut[7]);
 	Register_29Bits TBR(wTBROut, {wALUOut[31:7], wALUOut[3:0]}, Clk, Gnd, TBR_Ld);
@@ -80,7 +84,10 @@ wire[31:0] wALUOut, wDataOut, wIROut, wMAROut, wMDROut, wPCOut, wNPCOut, wShifte
 	Bit_Adder AddShifter(wAddShifterOut, wPCOut, wShifterOut);
 	Bit_Adder AddNPC(wAddNPCOut, 32'h00000004, wNPCOut);
 	Bit_Adder AddSumNPC(wAddSumNPCOut, 32'h00000004, wAddNPCOut);
-
+//always@(wAddSumNPCOut, wAddNPCOut)
+//begin
+//$display("wAddSumNPCOut= %d, wAddNPCOut= %d",wAddSumNPCOut, wAddNPCOut);
+//end
 
 //*********************************
 //	DataPath Multiplexers
@@ -97,6 +104,11 @@ wire[31:0] wALUOut, wDataOut, wIROut, wMAROut, wMDROut, wPCOut, wNPCOut, wShifte
 
 
 	Mux32_4x1 MuxNP(wMuxNPOut, wALUOut, wAddSumNPCOut, wAddShifterOut, wAddNPCOut, MNP);
+
+//always@(wMuxNPOut, wALUOut, wAddSumNPCOut, wAddShifterOut, wAddNPCOut, MNP)
+//begin
+//$display("wMuxNPOut= %d wALUOut= %b wAddSumNPCOut= %b wAddShifterOut= %b wAddNPCOut= %b MNP= %b",wMuxNPOut, wALUOut, wAddSumNPCOut, wAddShifterOut, wAddNPCOut, MNP);
+//end
 	Mux32_4x1 MuxP(wMuxPOut, 32'h00000000, {wTBROut[28:4], wTTROut, wTBROut[3:0]}, wAddNPCOut, wNPCOut,MP);
 	Mux5_2x1 MuxSa(wMuxSaOut, wIROut[18:14], wIROut[29:25], MSa); 
 

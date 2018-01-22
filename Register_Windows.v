@@ -151,9 +151,9 @@ module Register_Windows(output [31:0] PortA, PortB, input [31:0] PortC, input [4
 	Register_32Bits R1(wR1_Out, PortC, Clk, RF_Clear_Enable, Load_Enable_Decoder_Out[1]);
 	Register_32Bits R2(wR2_Out, PortC, Clk, RF_Clear_Enable, Load_Enable_Decoder_Out[2]);
 	Register_32Bits R3(wR3_Out, PortC, Clk, RF_Clear_Enable, Load_Enable_Decoder_Out[3]);
-//always@(wR1_Out, PortC, Clk, RF_Clear_Enable, Load_Enable_Decoder_Out[1])
+//always@(wR2_Out, PortC, Clk, RF_Clear_Enable, Load_Enable_Decoder_Out[1])
 //begin
-//$display("Register %b PortC %b Clk= %b RF_Clear_Enable= %b LoadSelect=%b RF_Load_Enable =%b LoadE %h",wR1_Out, PortC, Clk, RF_Clear_Enable, Load_Select,RF_Load_Enable, Load_Enable_Decoder_Out);
+//$display("Register %b PortC %b Clk= %b RF_Clear_Enable= %b LoadSelect=%b RF_Load_Enable =%b LoadE %h",wR2_Out, PortC, Clk, RF_Clear_Enable, Load_Select,RF_Load_Enable, Load_Enable_Decoder_Out);
 //end
 
 	//R4-R7
@@ -848,7 +848,7 @@ endmodule
 //	Register Module
 //*****************************
 module Register_32Bits(output reg [31:0] Q, input [31:0] D, input Clk, Clr, Le);
-always@(posedge Clk, Clr) //Reminder: Possible Change to Clr in negedge
+always@(posedge Clk, Clr,posedge Le) //Reminder: Possible Change to Clr in negedge
 begin
 if(Clr)
         Q <= 32'h00000000;

@@ -614,9 +614,9 @@ always @ (State)
 case (State)
 7'b0000000: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 1;  ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 1; npc_ld = 0; npc_clr=1; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 0; mc = 0; mf = 0; mm = 0; mnp  = 0; mop = 0; mp = 0; msa = 0; msc = 0; opxx = 6'b000000;
 end
-7'b0000001: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 1; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 1; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 2'b10; mc = 0; mf = 0; mm = 0; mnp = 2'b10; mop = 1; mp = 0; msa = 0; msc = 0; opxx = 6'b100001;
+7'b0000001: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 0; mar_ld = 1; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 0; mov = 0; type = 0; fr_ld = 0; ma = 0; mb = 2'b10; mc = 0; mf = 0; mm = 0; mnp = 2'b11; mop = 1; mp = 0; msa = 0; msc = 0; opxx = 6'b100001;
 end
-7'b0000010: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0; ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 1; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 1; mov = 1; type = 2'b10; fr_ld = 0; ma = 0; mb = 0; mc = 0; mf = 0; mm = 0; mnp  = 0; mop = 0; mp = 2'b11; msa = 0; msc = 0; opxx = 6'b000000;
+7'b0000010: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0; ir_ld = 0; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 1; npc_ld = 1; npc_clr=0; psr_ld = 0;  r_w = 1; mov = 1; type = 2'b10; fr_ld = 0; ma = 0; mb = 0; mc = 0; mf = 0; mm = 0; mnp  = 0; mop = 0; mp = 2'b11; msa = 0; msc = 0; opxx = 6'b000000;
 end
 7'b0000011: begin reg_win_en = 0; rf_load_en = 0; rf_clear_en = 0;  ir_ld = 1; mar_ld = 0; mdr_ld = 0; wim_ld = 0; tbr_ld = 0; ttr_ld = 0; pc_ld = 0; npc_ld = 0; npc_clr=0; psr_ld = 0;  r_w = 1; mov = 1; type = 2'b10; fr_ld = 0; ma = 0; mb = 0; mc = 0; mf = 0; mm = 0; mnp  = 0; mop = 0; mp = 0; msa = 0; msc = 0; opxx = 6'b000000;
 end
