@@ -72,10 +72,10 @@ wire[31:0] wALUOut, wDataOut, wIROut, wMAROut, wMDROut, wPCOut, wNPCOut, wShifte
 //*********************************
 	Mux32_4x1 MuxA(wMuxAOut, wPortA, {wPSROut[31:24], wFROut, wPSROut[19:0]}, wWIMOut, {wTBROut[28:4], wTTROut, wTBROut[3:0]}, MA); 
 	Mux32_4x1 MuxB(wMuxBOut, wPortB, wShifterOut, wMuxCOut, wMDROut, MB); 
-always@(wMuxBOut, wPortB, wShifterOut, wMuxCOut, wMDROut, MB)
-begin
-$display("wMuxBOut= %d, wPortB= %d, wShifterOut= %d, wMuxCOut= %d, wMDROut=%d, MB= %d",wMuxBOut, wPortB, wShifterOut, wMuxCOut, wMDROut, MB);
-end
+//always@(wMuxBOut, wPortB, wShifterOut, wMuxCOut, wMDROut, MB)
+//begin
+//$display("wMuxBOut= %d, wPortB= %d, wShifterOut= %d, wMuxCOut= %d, wMDROut=%d, MB= %d",wMuxBOut, wPortB, wShifterOut, wMuxCOut, wMDROut, MB);
+//end
 
 	Mux32_2x1 MuxC(wMuxCOut, wPCOut, wNPCOut, MC);
 	Mux32_2x1 MuxM(wMuxMOut, wDataOut,  wALUOut, MM);

@@ -1,7 +1,7 @@
 module Shifter_And_SignExtender(output reg [31:0] Out, input [31:0] IR31_0);
 always@(IR31_0)
 	case(IR31_0[31:30])
-		10:
+		2'b10:
 		begin
 			if(IR31_0[13] == 1)
 				if(IR31_0[24:19] == 6'b111010)
@@ -44,7 +44,7 @@ always@(IR31_0)
 				end
 			end
 
-		11:
+		2'b11:
 		begin
 			if(IR31_0[13] == 1)
 				if(IR31_0[12] == 0)
@@ -61,12 +61,12 @@ always@(IR31_0)
 					
 		end	
 
-		00:
+		2'b00:
 		begin
 			Out = IR31_0[21:0] << 2;
 		end
 
-		01:
+		2'b01:
 		begin
 			Out = IR31_0[29:0] << 2;
 		end
