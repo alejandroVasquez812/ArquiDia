@@ -17,7 +17,7 @@ wire[6:0] State;
 integer fi,fo,code,i; 
 
 
-parameter sim_time = 5000;
+parameter sim_time = 10000;
 
 
 	SPARC_MPU MPU(State, wIROut, wMAROut, Clk, Clr);
@@ -50,13 +50,13 @@ join
 
 //Clock Setup
 initial begin
-        #115 Clk = 1'b0;
-        forever #5 Clk = ~Clk;
+         Clk = 1'b0;
+        forever #115 Clk = ~Clk;
 end
 
 initial begin
-	$display("State wMAROut          wIROut				Time");
-        $monitor("%d  %d	%h	%d",State, wMAROut, wIROut, $time);
+	$display("State       wMAROut         wIROut		         Time");
+        $monitor("%d    %d	   %h	%d",State, wMAROut, wIROut, $time);
 end
 
 endmodule

@@ -22,8 +22,8 @@ wire[31:0] wALUOut, wDataOut, wIROut, wMAROut, wMDROut, wPCOut, wNPCOut, wShifte
 
 
 	alu SPARC_ALU(wALUOut, wN, wZ, wC, wV, wMuxOPOut, wMuxAOut, wMuxBOut, wFROut[3]);
-	//RamAccess SPARC_RAM(wDataOut, MOC, MOV, RW, wMAROut[8:0], wMDROut, type);
-	RAM SPARC_RAM(wDataOut, MOC, wMDROut, wMAROut[8:0], type, RW, MOV);
+	RamAccess SPARC_RAM(wDataOut, MOC, MOV, RW, wMAROut[8:0], wMDROut, type);
+	//RAM SPARC_RAM(wDataOut, MOC, wMDROut, wMAROut[8:0], type, RW, MOV);
 
 	Register_Windows SPARC_Register_Windows(wPortA, wPortB, wALUOut, wMuxSaOut, wIROut[4:0], wMuxScOut, wPSROut[1:0], RF_Load_Enable, RF_Clear_Enable, Register_Windows_Enable, Clk);
 
