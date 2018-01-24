@@ -147,37 +147,37 @@ initial begin
 
 	#10;
 	//Fetch 3
-	Register_Windows_Enable = 1'b0;
-	RF_Load_Enable = 1'b0;
-	RF_Clear_Enable = 1'b0;
-	OpXX = 5'b00000;
-	IR_Ld = 1'b1;
-	MAR_Ld = 1'b0;
-	MDR_Ld = 1'b0;
-	WIM_Ld = 1'b0;
-	TBR_Ld = 1'b0;
-	TTR_Ld = 1'b0;
-	PC_Ld = 1'b0;
-	NPC_Ld = 1'b1;
-	nPC_Clr = 1'b0;
-	PSR_Ld = 1'b0;
-	RW = 1'b1;
-	MOV = 1'b1;
-	type = 2'b10;
-	FR_Ld = 1'b0;
-	MA = 2'b00;
-	MB = 2'b00;
-	MC = 1'b0;
-	MF = 1'b0;
-	MM = 1'b0;
+	Register_Windows_Enable <= 1'b0;
+	RF_Load_Enable <= 1'b0;
+	RF_Clear_Enable <= 1'b0;
+	OpXX <= 5'b00000;
+	IR_Ld <= 1'b1;
+	MAR_Ld <= 1'b0;
+	MDR_Ld <= 1'b0;
+	WIM_Ld <= 1'b0;
+	TBR_Ld <= 1'b0;
+	TTR_Ld <= 1'b0;
+	PC_Ld <= 1'b0;
+	NPC_Ld <= 1'b1;
+	nPC_Clr <= 1'b0;
+	PSR_Ld <= 1'b0;
+	RW <= 1'b1;
+	MOV <= 1'b1;
+	type <= 2'b10;
+	FR_Ld <= 1'b0;
+	MA <= 2'b00;
+	MB <= 2'b00;
+	MC <= 1'b0;
+	MF <= 1'b0;
+	MM <= 1'b0;
 	MR <= 1'b0;
-        MP = 2'b00;
-	MNP = 2'b11;
-	MOP = 1'b0;
-	MP = 1'b0;
-	MS = 2'b00;
-	MSa = 1'b0;
-	MSc = 2'b00;
+        MP <= 2'b00;
+	MNP <= 2'b11;
+	MOP <= 1'b0;
+	MP <= 1'b0;
+	MS <= 2'b00;
+	MSa <= 1'b0;
+	MSc <= 2'b00;
 
 	#10;
 	//Decode
@@ -211,9 +211,9 @@ initial begin
 	MS <= 2'b00;
 	MSa <= 1'b0;
 	MSc <= 2'b00;
-/*
+
 	#10;
-//State 11
+	//State 11
 	Register_Windows_Enable = 1'b1;
 	RF_Load_Enable = 1'b1;
 	RF_Clear_Enable = 1'b0;
@@ -224,7 +224,7 @@ initial begin
 	WIM_Ld = 1'b0;
 	TBR_Ld = 1'b0;
 	TTR_Ld = 1'b0;
-	PC_Ld = 1'b1;
+	PC_Ld = 1'b0;
 	NPC_Ld = 1'b0;
 	nPC_Clr = 1'b0;
 	PSR_Ld = 1'b0;
@@ -244,7 +244,7 @@ initial begin
 	MS = 2'b00;
 	MSa = 1'b0;
 	MSc = 2'b00;
-*/
+
 end
 
 
