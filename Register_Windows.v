@@ -848,7 +848,7 @@ endmodule
 //	Register Module
 //*****************************
 module Register_32Bits(output reg [31:0] Q, input [31:0] D, input Clk, Clr, Le);
-always@(posedge Clk, Clr,posedge Le) //Reminder: Possible Change to Clr in negedge
+always@(posedge Clk, Clr, posedge Le) //Reminder: Possible Change to Clr in negedge
 begin
 if(Clr)
         Q <= 32'h00000000;

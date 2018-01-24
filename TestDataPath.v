@@ -5,7 +5,7 @@ module TestDataPath;
 reg[7:0] Data;
 reg [5:0] OpXX;
 reg[1:0]type, MA, MB, MNP, MP, MS, MSc;
-reg IR_Ld, MAR_Ld, MDR_Ld, WIM_Ld, TBR_Ld, TTR_Ld, PC_Ld, NPC_Ld, nPC_Clr, PSR_Ld, FR_Ld, RW, MOV, MC, MF, MM, MOP, MSa, 
+reg IR_Ld, MAR_Ld, MDR_Ld, WIM_Ld, TBR_Ld, TTR_Ld, PC_Ld, NPC_Ld, nPC_Clr, PSR_Ld, FR_Ld, RW, MOV, MC, MF, MM, MR, MOP, MSa, 
 	Register_Windows_Enable, RF_Load_Enable, RF_Clear_Enable, Clk;
 
 
@@ -20,7 +20,7 @@ parameter sim_time = 10000;
 
 	DataPath DP(wIROut, wMAROut, MOC, BCOND, TCOND, Register_Windows_Enable, RF_Load_Enable, RF_Clear_Enable, IR_Ld,
 	MAR_Ld, MDR_Ld, WIM_Ld, TBR_Ld, TTR_Ld, PC_Ld, NPC_Ld, nPC_Clr, PSR_Ld, RW, MOV, type, FR_Ld, MA, 
-	MB, MC, MF, MM, MNP, MOP, MP, MSa, MSc, OpXX, Clk);
+	MB, MC, MF, MM, MR, MNP, MOP, MP, MSa, MSc, OpXX, Clk);
 
 initial #sim_time $finish;
 
@@ -56,8 +56,8 @@ initial fork
 	TBR_Ld = 1'b0;
 	TTR_Ld = 1'b0;
 	PC_Ld = 1'b1;
-	NPC_Ld = 1'b0;
-	nPC_Clr = 1'b1;
+	NPC_Ld = 1'b1;
+	nPC_Clr = 1'b0;
 	PSR_Ld = 1'b0;
 	RW = 1'b0;
 	MOV = 1'b0;
@@ -68,14 +68,15 @@ initial fork
 	MC = 1'b0;
 	MF = 1'b0;
 	MM = 1'b0;
+	MR = 1'b1;
         MP = 2'b00;
-	MNP = 2'b00;
+	MNP = 2'b11;
 	MOP = 1'b0;
 	MP = 2'b00;
 	MS = 2'b00;
 	MSa = 1'b0;
 	MSc = 2'b00;
-
+/*
 	#10;
 	//Fetch1
 	Register_Windows_Enable = 1'b0;
@@ -240,6 +241,7 @@ initial fork
 	MS = 2'b00;
 	MSa = 1'b0;
 	MSc = 2'b00;
+*/
 join
 
 
@@ -251,8 +253,8 @@ end
 
 
 initial begin
-	$display("wMAROut          wIROut				Time");
-        $monitor("%d	%h	%d", wMAROut, wIROut, $time);
+	$display("wMAROut          wIROut		wPCOut		wNPCOut			Time");
+        $monitor("%d	%h	%h	%h	%d", wMAROut, wIROut, DP.PC.Q, DP.NPC.Q, $time);
 end
 
 endmodule
