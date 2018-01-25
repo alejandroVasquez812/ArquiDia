@@ -228,8 +228,47 @@ initial begin
 	NPC_Ld = 1'b0;
 	nPC_Clr = 1'b0;
 	PSR_Ld = 1'b0;
-	RW = 1'b1;
-	MOV = 1'b1;
+	RW = 1'b0;
+	MOV = 1'b0;
+	type = 2'b00;
+	FR_Ld = 1'b0;
+	MA = 2'b00;
+	MB = 2'b01;
+	MC = 1'b0;
+	MF = 1'b0;
+	MM = 1'b0;
+        MP = 2'b00;
+	MNP = 2'b00;
+	MOP = 1'b0;
+	MP = 1'b0;
+	MS = 2'b00;
+	MSa = 1'b0;
+	MSc = 2'b00;
+
+
+/*
+//////TODO
+*/
+
+
+	#10;
+	//State 13
+	Register_Windows_Enable = 1'b1;
+	RF_Load_Enable = 1'b1;
+	RF_Clear_Enable = 1'b0;
+	OpXX = 5'b00000;
+	IR_Ld = 1'b0;
+	MAR_Ld = 1'b0;
+	MDR_Ld = 1'b0;
+	WIM_Ld = 1'b0;
+	TBR_Ld = 1'b0;
+	TTR_Ld = 1'b0;
+	PC_Ld = 1'b0;
+	NPC_Ld = 1'b0;
+	nPC_Clr = 1'b0;
+	PSR_Ld = 1'b0;
+	RW = 1'b0;
+	MOV = 1'b0;
 	type = 2'b10;
 	FR_Ld = 1'b0;
 	MA = 2'b00;
@@ -256,8 +295,8 @@ end
 
 
 initial begin
-	$display("wMAROut          wIROut		wPCOut		wNPCOut			Time");
-        $monitor("%d	%h	%h	%h	%d", wMAROut, wIROut, DP.PC.Q, DP.NPC.Q, $time);
+	$display("wMAROut          wALUOut		wPCOut		wNPCOut			Time");
+        $monitor("%d	%h	%h	%h	%d", wMAROut, DP.SPARC_ALU.Y, DP.PC.Q, DP.NPC.Q, $time);
 end
 
 endmodule

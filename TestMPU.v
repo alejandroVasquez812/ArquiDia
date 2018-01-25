@@ -17,7 +17,7 @@ wire[6:0] State;
 integer fi,fo,code,i; 
 
 
-parameter sim_time = 10000;
+parameter sim_time = 5000;
 
 
 	SPARC_MPU MPU(State, wIROut, wMAROut, Clk, Clr);
@@ -55,13 +55,13 @@ initial begin
 end
 
 initial begin
-	$display("State       wMAROut         wIROut		         Time");
+	$display("State       wMAROut         wIROut	CNVZ	wALUOut		wShifterOut       Time");
        //$monitor("%d    %d	   %h	%d",State, wMAROut, wIROut, $time);
 end
 
 always@(State)
 begin
-$display("%d    %d	   %h	%d",State, wMAROut, wIROut, $time);
+$display("%d    %d	   %h	%b	%h	%h	%d",State, wMAROut, wIROut, MPU.DP.FR.Q, MPU.DP.SPARC_ALU.Y, MPU.DP.SPARC_Shifter.Out, $time);
 end
 //end
 

@@ -65,12 +65,16 @@ if(A[31]==B[31]&& Y[31]!=A[31])V=1;
 else V=0;
 end
 6'b000100: Y=A-B;//SUB
+
 6'b010100: begin {C,Y}=A-B;//SUB modify cc
+//6'b010100: begin Y = A-B;
 N=Y[31];
-if(Y==0) Z=1;
+if(Y == 0) Z=1;
 else Z=0;
+//Z = ~(|Y);
 if(A[31]!=B[31]&&Y[31]!=A[31]) V=1;
 else V=0;
+C = 0;
 end
 6'b001100: Y=A-B-Ci; //SUB minus carry
 6'b011100: begin {C,Y}=A-B-Ci;//SUB minus carry modify cc

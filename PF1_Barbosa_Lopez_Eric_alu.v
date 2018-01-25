@@ -84,18 +84,46 @@ end
 6'b100110: Y=A>>B[4:0]; //logical shift right
 6'b100111: Y=A>>>B[4:0]; // arithmetic shift right
 
-//NEW
+/*
 6'b100000: Y=A;
 6'b100001: Y=B;
 6'b100010: Y={A[31:5],A[4:0]-1};
 6'b100011: Y={A[31:5],A[4:0]+1};
 6'b100100: begin Y={A[31:8],A[7]=A[6],1,A[4:0]+1};
 6'b011111: begin Y={A[31:8],1,0,A[5]=0,A[4:0]-1};
-
+*/
 6'b100101: Y=A[4:0]+1;
 endcase
 end
 endmodule
+
+module TestALU;
+reg [5:0]op;
+reg [31:0]A;
+reg [31:0]B;
+reg Ci;
+wire [31:0]Y;
+wire N,Z,C,V;
+alu alu1(Y, N, Z, C, V, op, A, B, Ci);
+initial #500 $finish;
+initial fork
+A = 32'b00000000000000000000000000000111;
+B = 32'b00000000000000000000000000000001;
+Ci=0;
+//Operations that not modify the condition codes
+#10 op = 6'b010100; //subcc
+
+join
+
+initial begin
+$display(" A = %b ", A);
+$display(" B = %b ", B);
+$display (" C N Z V Y ");
+$monitor (" %b ", Y);
+end
+endmodule
+
+/*
 module test_alu;
 reg [5:0]op;
 reg [31:0]A;
@@ -143,3 +171,4 @@ $display (" C N Z V Y ");
 $monitor (" %b %b %b %b %b ", C, N, Z, V, Y);
 end
 endmodule
+*/
