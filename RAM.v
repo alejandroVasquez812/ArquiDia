@@ -16,11 +16,14 @@ module RamAccess(output reg[31:0] DataOut0,output reg MOC, input Enable0, ReadWr
 		ram128x8 ram2 (DataOut2,MOC2,Enable2,ReadWrite,Address2,DataIn2);
 		ram128x8 ram3 (DataOut3,MOC3,Enable3,ReadWrite,Address3,DataIn3);
 		ram128x8 ram4 (DataOut4,MOC4,Enable4,ReadWrite,Address4,DataIn4);
-	
-	always @ (posedge Enable0) begin
-	//$display("Data leida del Address %d es %b",Address,DataOut0);
-	if(!ReadWrite)begin
+		//always @ (MOC) begin
+	//$display("Data leida del Address %d es %b  %d",Address,DataOut0,$time);
+	//$display("1= %d 2=%d 3=%d 4=%d",MOC,MOC2,MOC3,MOC4);
+	//end
+	always @ (posedge Enable0,Address) begin
 	MOC=0;
+	if(Enable0)begin
+	if(!ReadWrite)begin
 	if(mode == 0)begin
 	Address1=Address;Address2=Address;Address3=Address;Address4=Address;
 	if((Address%4 == 3) || Address == 7'b0000011)begin
@@ -28,7 +31,8 @@ module RamAccess(output reg[31:0] DataOut0,output reg MOC, input Enable0, ReadWr
 		DataIn4[i]=DataIn0[i];
 		end
 		Enable4=1'b0;
-	 Enable4=1'b1;
+	Enable4=1'b1;
+	wait(MOC4==1);
 	 MOC=MOC4;
 	end	
 	else if((Address%4 == 2) || Address == 7'b0000010)begin
@@ -36,22 +40,26 @@ module RamAccess(output reg[31:0] DataOut0,output reg MOC, input Enable0, ReadWr
 			   DataIn3[i]=DataIn0[i];
 			end
 			Enable3=1'b0;
-			#1 Enable3=1'b1;
+			Enable3=1'b1;
+			wait(MOC3==1);
 			 MOC=MOC3;
 		end
 	else if((Address%4 == 1) || Address == 7'b0000001)begin
 			for(i=0;i<8;i++)
 			   DataIn2[i]=DataIn0[i];
 			Enable2=1'b0;
-			#1 Enable2=1'b1;
+			Enable2=1'b1;
+			wait(MOC2==1);
 			MOC=MOC2;
 		end
 	else begin 			
 				Enable=1'b0;
 				DataIn=DataIn0;
-				#1 Enable=1'b1;
+				Enable=1'b1;
+				wait(MOC1==1);
 				MOC=MOC1;
 			end
+
 	end		
 	else if(mode==1)begin
 	temp=Address;
@@ -67,7 +75,7 @@ module RamAccess(output reg[31:0] DataOut0,output reg MOC, input Enable0, ReadWr
 			Enable4=1'b0;
 			Enable4=1'b1;
 			Enable3=1'b1;
-			#10;
+			wait(MOC4==1&&MOC3==1);
 			MOC=MOC4&&MOC3;
 	end
 	else begin
@@ -79,7 +87,7 @@ module RamAccess(output reg[31:0] DataOut0,output reg MOC, input Enable0, ReadWr
 			Enable2=1'b0;
 			Enable2=1'b1;
 			Enable=1'b1;
-			#10;
+			wait(MOC2==1&&MOC1==1);
 			MOC=MOC2&&MOC1;
 	end
 	
@@ -107,29 +115,29 @@ module RamAccess(output reg[31:0] DataOut0,output reg MOC, input Enable0, ReadWr
 			Address1=Address;Address2=Address;Address3=Address;Address4=Address;
 			if((Address%4 == 3) || Address == 7'b0000011)begin
 				Enable4=1'b0;
-				#1 Enable4=1'b1;
-				#1 wait(MOC4==1);
+				Enable4=1'b1;
+				wait(MOC4==1);
 				DataOut0=DataOut4;
 				MOC=MOC4;
 			end
 			else if((Address%4 == 2) || Address == 7'b0000010)begin
 					Enable3=1'b0;
-					#1 Enable3=1'b1;
-					#1 wait(MOC3==1);
+					Enable3=1'b1;
+					wait(MOC3==1);
 					DataOut0=DataOut3;
 					MOC=MOC3;
 			end
 			else if((Address%4 == 1) || Address == 7'b0000001)begin
 					Enable2=1'b0;
-					#1 Enable2=1'b1;
-					#1 wait(MOC2==1);
+					Enable2=1'b1;
+					wait(MOC2==1);
 					DataOut0=DataOut2;
 					MOC=MOC2;
 			end
 			else begin
-				Enable=0;
-			#1  Enable=1;
-			#1 wait(MOC1==1);
+			Enable=0;
+			Enable=1;
+			wait(MOC1==1);
 			DataOut0=DataOut;
 			MOC=MOC1;
 			end
@@ -144,9 +152,8 @@ module RamAccess(output reg[31:0] DataOut0,output reg MOC, input Enable0, ReadWr
 			Enable4=1'b0;
 			Enable4=1'b1;
 			Enable3=1'b1;
-			#1
+			wait(MOC3==1&&MOC4==1);
 			DataOut0={DataOut3,DataOut4};
-			#10;
 			MOC=MOC4&&MOC3;
 	end
 	else begin
@@ -154,9 +161,8 @@ module RamAccess(output reg[31:0] DataOut0,output reg MOC, input Enable0, ReadWr
 			Enable2=1'b0;
 			Enable2=1'b1;
 			Enable=1'b1;
-			#1
+			wait(MOC2==1&&MOC1==1)
 			DataOut0={DataOut,DataOut2};
-			#10;
 			MOC=MOC2&&MOC1;
 	end
 		end
@@ -165,13 +171,15 @@ module RamAccess(output reg[31:0] DataOut0,output reg MOC, input Enable0, ReadWr
 	temp=temp>>>2;
 	temp=temp<<<2;
 	Address1=temp;Address2=temp+1;Address3=temp+2;Address4=temp+3;
+					//$display("1= %d 2=%d 3=%d 4=%d",MOC1,MOC2,MOC3,MOC4);
 					Enable=1'b0; Enable2=1'b0; Enable3=1'b0; Enable4=1'b0;
 					Enable=1'b1; Enable2=1'b1; Enable3=1'b1; Enable4=1'b1;
-					#1
+					wait(MOC2==1&&MOC1==1&&MOC3==1&&MOC4==1);
+					//$display("1= %d 2=%d 3=%d 4=%d",MOC1,MOC2,MOC3,MOC4);
 					DataOut0={DataOut,DataOut2,DataOut3,DataOut4};
 					MOC=MOC4&&MOC3&&MOC2&&MOC1;
 	end
-		end
-		
+	end
+	end	
 	end
 endmodule	

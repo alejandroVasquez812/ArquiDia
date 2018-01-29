@@ -14,27 +14,30 @@ wire[31:0] wIROut, wMAROut, word;
 wire[6:0] State;
 
 //File variables
-integer fi,fo,code,i; 
+integer fi,fo,code,i,f; 
 
 
-parameter sim_time = 3000;
+parameter sim_time = 600;
 
 
 	SPARC_MPU MPU(State, wIROut, wMAROut, Clk, Clr);
 
-initial #sim_time $finish;
+initial begin
+f=0; 
+#sim_time f=1;
+end
 
 initial begin
 		//Preload RAM with input file
 		MPU.CU.CSE.r_w=1'b0;
 		MPU.CU.CSE.type=0;
 		MPU.DP.MAR.Q=7'b0000000;
-		fi=$fopen("input.txt","r");
+		fi=$fopen("input.txt","r");//prueba2.txt
 		while(!$feof(fi))begin
 			code = $fscanf(fi, "%b", Data);
 			MPU.CU.CSE.mov=0;
                         MPU.DP.MDR.Q = Data;
-			#1 MPU.CU.CSE.mov=1'b1;
+			MPU.CU.CSE.mov=1'b1;
 			#1 MPU.DP.MAR.Q=MPU.DP.MAR.Q+1;
 		end
 		$fclose(fi);
@@ -50,8 +53,26 @@ join
 
 //Clock Setup
 initial begin
-       	  #150 Clk = 1'b0;
-        forever #5 Clk = ~Clk;
+       	#60 Clk = 1'b0;
+        while(f==0)begin
+	 #1 Clk = ~Clk;
+	end
+	wait(f==1);
+		fo=$fopen("memcontent.txt","w");
+		//
+		MPU.CU.CSE.r_w=1'b1;
+		MPU.CU.CSE.type=0;
+		MPU.DP.MAR.Q=0;
+		while(MPU.DP.MAR.Q<=60)
+		begin
+			MPU.CU.CSE.mov=0;
+			MPU.CU.CSE.mov=1'b1;
+			#1 wait(MPU.DP.SPARC_RAM.MOC==1)
+			begin
+				$fdisplay(fo,"Byte en %d = %b",MPU.DP.MAR.Q,MPU.DP.SPARC_RAM.DataOut0[7:0]);
+				MPU.DP.MAR.Q=MPU.DP.MAR.Q+1;
+			end
+		end
 end
 
 initial begin
