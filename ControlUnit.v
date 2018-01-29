@@ -306,8 +306,8 @@ always @ (IR,State,BCond,TCond,MOC)
 				if (IR[31:30]== 2'b00 && IR[29] == 1 && IR[28:25] == 4'b1000 && IR[24:22] == 3'b010) 
 					NextState = 7'b0110100;
 				//uncond branch a=0 nextstate=0110110
-				if (IR[31:30]== 2'b00 && IR[29] == 1 && IR[28:25] == 4'b1000 && IR[24:22] == 3'b010) 
-					NextState = 7'b0110110;
+				if (IR[31:30]== 2'b00 && IR[29] == 0 && IR[28:25] == 4'b1000 && IR[24:22] == 3'b010) 
+					NextState = 7'b0110001;
 
 				if (IR[31:30]== 2'b00 && IR[29] == 1 && IR[28:25] == 4'b0000 && IR[24:22] == 3'b010) 
 					NextState = 7'b0110110;
