@@ -18,6 +18,7 @@ module RamAccess(output reg[31:0] DataOut0,output reg MOC, input Enable0, ReadWr
 		ram128x8 ram4 (DataOut4,MOC4,Enable4,ReadWrite,Address4,DataIn4);
 	
 	always @ (posedge Enable0) begin
+	//$display("Data leida del Address %d es %b",Address,DataOut0);
 	if(!ReadWrite)begin
 	MOC=0;
 	if(mode == 0)begin
@@ -27,7 +28,7 @@ module RamAccess(output reg[31:0] DataOut0,output reg MOC, input Enable0, ReadWr
 		DataIn4[i]=DataIn0[i];
 		end
 		Enable4=1'b0;
-	#1 Enable4=1'b1;
+	 Enable4=1'b1;
 	 MOC=MOC4;
 	end	
 	else if((Address%4 == 2) || Address == 7'b0000010)begin

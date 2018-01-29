@@ -5,9 +5,9 @@
 `include "Flag_Register.v"
 `include "Shifter_And_SignExtender.v"
 
-module DataPath(output [31:0] wIROut, wMAROut, output MOC, BCOND, TCOND, input Register_Windows_Enable, RF_Load_Enable, RF_Clear_Enable, input IR_Ld, MAR_Ld, MDR_Ld, WIM_Ld, TBR_Ld, TTR_Ld, PC_Ld, NPC_Ld, nPC_Clr, PSR_Ld, RW, MOV,input[1:0]type, input FR_Ld, input [1:0] MA, MB,input MC, MF, MM,input [1:0] MNP,input MOP, input [1:0] MP, input MSa,input [1:0] MSc, input [5:0] OpXX, input Clk);
+module DataPath(output [31:0] wIROut, wMAROut, output MOC, BCOND, TCOND, input Register_Windows_Enable, RF_Load_Enable, RF_Clear_Enable, input IR_Ld, MAR_Ld, MDR_Ld, WIM_Ld, TBR_Ld, TTR_Ld, PC_Ld, NPC_Ld, nPC_Clr, PSR_Ld, RW, MOV,input[1:0]type, input FR_Ld, input [1:0] MA, MB,input MC, MF, MM, MR, input [1:0] MNP,input MOP, input [1:0] MP, input MSa,input [1:0] MSc, input [5:0] OpXX, input Clk);
 
-wire[31:0] wALUOut, wDataOut, wIROut, wMAROut, wMDROut, wPCOut, wNPCOut, wShifterOut, wAddShifterOut, wAddNPCOut, wAddSumNPCOut,wMuxMOut, wMuxPOut, wMuxNPOut, wWIMOut, wPortA, wPortB, wMuxAOut, wMuxBOut, wMuxCOut;
+wire[31:0] wALUOut, wDataOut, wIROut, wMAROut, wMDROut, wPCOut, wNPCOut, wShifterOut, wAddShifterOut, wAddNPCOut, wAddSumNPCOut, wMuxMOut, wMuxPOut, wMuxNPOut, wWIMOut, wPortA, wPortB, wMuxAOut, wMuxBOut, wMuxCOut, wMuxROut;
 
 	wire[5:0] wMuxOPOut;
         wire [4:0] wMuxSaOut, wMuxScOut ;
@@ -101,13 +101,13 @@ wire[31:0] wALUOut, wDataOut, wIROut, wMAROut, wMDROut, wPCOut, wNPCOut, wShifte
 
 	Mux32_2x1 MuxC(wMuxCOut, wPCOut, wNPCOut, MC);
 	Mux32_2x1 MuxM(wMuxMOut, wDataOut,  wALUOut, MM);
+	Mux32_2x1 MuxR(wMuxROut, wAddNPCOut,  32'h00000004, MR);
 
-
-	Mux32_4x1 MuxNP(wMuxNPOut, wALUOut, wAddSumNPCOut, wAddShifterOut, wAddNPCOut, MNP);
+	Mux32_4x1 MuxNP(wMuxNPOut, wALUOut, wAddSumNPCOut, wAddShifterOut, wMuxROut, MNP);
 
 //always@(wMuxNPOut, wALUOut, wAddSumNPCOut, wAddShifterOut, wAddNPCOut, MNP)
 //begin
-//$display("wMuxNPOut= %d wALUOut= %b wAddSumNPCOut= %b wAddShifterOut= %b wAddNPCOut= %b MNP= %b",wMuxNPOut, wALUOut, wAddSumNPCOut, wAddShifterOut, wAddNPCOut, MNP);
+//$display("wMuxNPOut= %d wAddSumNPCOut= %b wAddNPCOut= %b MNP= %b",wMuxNPOut, wAddSumNPCOut, wAddNPCOut, MNP);
 //end
 	Mux32_4x1 MuxP(wMuxPOut, 32'h00000000, {wTBROut[28:4], wTTROut, wTBROut[3:0]}, wAddNPCOut, wNPCOut,MP);
 	Mux5_2x1 MuxSa(wMuxSaOut, wIROut[18:14], wIROut[29:25], MSa); 
@@ -225,6 +225,7 @@ endmodule
 //*******************************
 //	Adders
 //*******************************
-module Bit_Adder(output [31:0] S, input [31:0] A, input [31:0] B);
-	assign S = A + B;
+module Bit_Adder(output reg [31:0] S, input [31:0] A, input [31:0] B);
+always@(A,B)	
+	#15 S = A + B;
 endmodule

@@ -1,0 +1,15 @@
+add %R0, 44, %R1
+ldub %R0, %R1, %R2
+ldub %R1, 2, %R3
+add %R0, %R0, %R5
+add %R2, %R5, %R5
+subcc %R3, 1, %R3
+bne a=0 disp=0x3FFFFE
+add %R0, %R0, %R0
+stb %R1, 1, %R5
+ba a=0 disp=3
+add %R0, %R0, %R0
+sethi imm22 %R12
+ba a=0 disp=0
+add %R0, %R0, %R0
+

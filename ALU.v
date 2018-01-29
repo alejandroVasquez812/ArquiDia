@@ -65,12 +65,16 @@ if(A[31]==B[31]&& Y[31]!=A[31])V=1;
 else V=0;
 end
 6'b000100: Y=A-B;//SUB
+
 6'b010100: begin {C,Y}=A-B;//SUB modify cc
+//6'b010100: begin Y = A-B;
 N=Y[31];
-if(Y==0) Z=1;
+if(Y == 0) Z=1;
 else Z=0;
+//Z = ~(|Y);
 if(A[31]!=B[31]&&Y[31]!=A[31]) V=1;
 else V=0;
+C = 0;
 end
 6'b001100: Y=A-B-Ci; //SUB minus carry
 6'b011100: begin {C,Y}=A-B-Ci;//SUB minus carry modify cc
@@ -91,6 +95,12 @@ end
 6'b100011: Y={A[31:5],A[4:0]+1'b1};
 6'b100100: Y={A[31:8],A[6],A[6],1'b1,A[4:0]+1'b1};
 6'b011111: Y={A[31:8],1'b1,A[7],1'b0,A[4:0]-1'b1};
+
+6'b111111:
+begin
+	Y = B - 4;
+end
+
 endcase
 //$display("Y = %d A= %d B=%d",Y,A,B);
 end

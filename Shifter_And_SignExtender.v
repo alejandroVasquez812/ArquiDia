@@ -63,7 +63,18 @@ always@(IR31_0)
 
 		2'b00:
 		begin
-			Out = IR31_0[21:0] << 2;
+			
+			if(IR31_0[21] == 1)
+				begin
+					Out[31:22] = 10'h3FF;
+					Out[21:0] = IR31_0[21:0] << 2;
+				end
+
+			else
+			begin
+				Out[31:22] = 10'h000;
+				Out[21:0] = IR31_0[21:0] << 2;
+			end
 		end
 
 		2'b01:
