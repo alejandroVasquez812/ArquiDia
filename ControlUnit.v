@@ -222,6 +222,9 @@ always @ (IR,State,BCond,TCond,MOC)
 				if (IR[31:30]== 2'b11 && IR[24:19] == 6'b000110 && IR[13] == 1'b1) 
 					NextState = 7'b0100011;
 
+				if (IR[31:30]== 2'b11 && IR[24:19] == 6'b000101 && IR[13] == 1'b1) 
+					NextState = 7'b0100011;
+
 				if (IR[31:30]== 2'b11 && IR[24:19] == 6'b000100 && IR[13] == 1'b1) 
 					NextState = 7'b0100011;
 
@@ -489,11 +492,17 @@ always @ (IR,State,BCond,TCond,MOC)
 			NextState = 7'b0011011;
 
 		7'b0011011: 
-			if(MOC) 
+			//if(MOC) 
 				NextState = 7'b0011100; 
+			//else 
+			//	NextState = 7'b0011011;
+//
+		7'b0011100: 
+			if(MOC) 
+				NextState = 7'b0000001; 
 			else 
-				NextState = 7'b0011011;
-
+				NextState = 7'b0011100;
+//
 		7'b0101000: 
 			NextState = 7'b0101001;
 		7'b0101001: 

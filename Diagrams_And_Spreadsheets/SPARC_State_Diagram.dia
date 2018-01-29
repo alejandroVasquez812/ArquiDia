@@ -9287,14 +9287,14 @@ NPC#</dia:string>
         <dia:point val="55.3985,-110.434"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="55.1249,-110.484;55.6484,-108.616"/>
+        <dia:rectangle val="55.3485,-110.58;56.85,-108.204"/>
       </dia:attribute>
       <dia:attribute name="conn_endpoints">
         <dia:point val="55.3985,-110.434"/>
         <dia:point val="55.3985,-108.666"/>
       </dia:attribute>
       <dia:attribute name="curve_distance">
-        <dia:real val="0.01"/>
+        <dia:real val="-1.4015000000000057"/>
       </dia:attribute>
       <dia:attribute name="line_width">
         <dia:real val="0.10000000149011612"/>
@@ -9429,13 +9429,13 @@ NPC#</dia:string>
         <dia:point val="46.9,-147.5"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="3.65,-147.731;87.8501,-107.25"/>
+        <dia:rectangle val="3.65,-147.731;87.8501,-105.05"/>
       </dia:attribute>
       <dia:attribute name="poly_points">
         <dia:point val="46.9,-147.5"/>
         <dia:point val="3.7,-147.5"/>
-        <dia:point val="3.7,-107.4"/>
-        <dia:point val="87.8,-107.3"/>
+        <dia:point val="3.7,-105.2"/>
+        <dia:point val="87.8,-105.1"/>
       </dia:attribute>
       <dia:attribute name="start_arrow">
         <dia:enum val="1"/>
