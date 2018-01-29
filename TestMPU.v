@@ -55,13 +55,13 @@ initial begin
 end
 
 initial begin
-	$display("State    wMAROut	wPCOut		wNPCOut		CNVZ	wALUOut		wMDROut       	Time");
+	$display("State    wMAROut	wPCOut		wNPCOut		CNVZ	wALUOut		wMDROut		BCOND     	Time");
         //$display("State    wMAROut	wIROut		wALUOut		wShifterOut	Time");
 end
 
 always@(State)
 begin
-$display("%d    %d	   %h	%h	%b	%h	%h	%d",State, wMAROut, MPU.DP.PC.Q, MPU.DP.NPC.Q, MPU.DP.FR.Q, MPU.DP.SPARC_ALU.Y, MPU.DP.MDR.Q, $time);
+$display("%d    %d	   %h	%h	%b	%h	%h	%b	%d",State, wMAROut, MPU.DP.PC.Q, MPU.DP.NPC.Q, MPU.DP.FR.Q, MPU.DP.SPARC_ALU.Y, MPU.DP.MDR.Q, MPU.DP.SPARC_Condition_Tester.BCOND, $time);
 
 //$display("%d    %d	   %h	%h	%h	%d",State, wMAROut, MPU.DP.IR.Q, MPU.DP.SPARC_ALU.Y, MPU.DP.SPARC_Shifter.Out, $time);
 end

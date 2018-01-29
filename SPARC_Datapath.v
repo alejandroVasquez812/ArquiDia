@@ -31,7 +31,7 @@ wire[31:0] wALUOut, wDataOut, wIROut, wMAROut, wMDROut, wPCOut, wNPCOut, wShifte
 	Register_Windows SPARC_Register_Windows(wPortA, wPortB, wALUOut, wMuxSaOut, wIROut[4:0], wMuxScOut, wPSROut[1:0], RF_Load_Enable, RF_Clear_Enable, Register_Windows_Enable, Clk);
 
 
-	Condition_Tester SPARC_Condition_Tester(BCOND, TCOND, wIROut[31:25], wWIMOut[3:0], wPSROut[11:0], wC, wN, wV, wZ);
+	Condition_Tester SPARC_Condition_Tester(BCOND, TCOND, wIROut[31:25], wWIMOut[3:0], wPSROut[11:0], wFROut[3], wFROut[2], wFROut[1], wFROut[0]);
 	Shifter_And_SignExtender SPARC_Shifter(wShifterOut, wIROut);
 //always@(wShifterOut, wIROut)
 //begin
@@ -227,5 +227,5 @@ endmodule
 //*******************************
 module Bit_Adder(output reg [31:0] S, input [31:0] A, input [31:0] B);
 always@(A,B)	
-	S = A + B; //Delay of #15
+	 S = A + B;
 endmodule

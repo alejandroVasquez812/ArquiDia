@@ -68,12 +68,14 @@ always@(IR31_0)
 				begin
 					Out[31:22] = 10'h3FF;
 					Out[21:0] = IR31_0[21:0] << 2;
+					Out = Out - 4; //Added and removed same op in ALU
 				end
 
 			else
 			begin
 				Out[31:22] = 10'h000;
 				Out[21:0] = IR31_0[21:0] << 2;
+				Out = Out - 4; //Added and removed same op in ALU
 			end
 		end
 
