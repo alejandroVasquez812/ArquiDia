@@ -227,5 +227,5 @@ endmodule
 //*******************************
 module Bit_Adder(output reg [31:0] S, input [31:0] A, input [31:0] B);
 always@(A,B)	
-	#15 S = A + B;
+	S = A + B; //Delay of #15
 endmodule
