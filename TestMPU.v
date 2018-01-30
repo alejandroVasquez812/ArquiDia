@@ -69,7 +69,7 @@ initial begin
 			MPU.CU.CSE.mov=1'b1;
 			#1 wait(MPU.DP.SPARC_RAM.MOC==1)
 			begin
-				$fdisplay(fo,"Byte en %d = %b",MPU.DP.MAR.Q,MPU.DP.SPARC_RAM.DataOut0[7:0]);
+				$fdisplay(fo,"Byte en %d = %d",MPU.DP.MAR.Q,MPU.DP.SPARC_RAM.DataOut0[7:0]);
 				MPU.DP.MAR.Q=MPU.DP.MAR.Q+1;
 			end
 		end
