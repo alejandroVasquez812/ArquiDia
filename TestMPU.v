@@ -17,7 +17,7 @@ wire[6:0] State;
 integer fi,fo,code,i,f; 
 
 
-parameter sim_time = 600;
+parameter sim_time = 2600;
 
 
 	SPARC_MPU MPU(State, wIROut, wMAROut, Clk, Clr);
@@ -53,7 +53,7 @@ join
 
 //Clock Setup
 initial begin
-       	#60 Clk = 1'b0;
+       	#350 Clk = 1'b0;
         while(f==0)begin
 	 #1 Clk = ~Clk;
 	end
@@ -63,7 +63,7 @@ initial begin
 		MPU.CU.CSE.r_w=1'b1;
 		MPU.CU.CSE.type=0;
 		MPU.DP.MAR.Q=0;
-		while(MPU.DP.MAR.Q<=60)
+		while(MPU.DP.MAR.Q<=230)
 		begin
 			MPU.CU.CSE.mov=0;
 			MPU.CU.CSE.mov=1'b1;
