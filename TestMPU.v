@@ -32,7 +32,7 @@ initial begin
 		MPU.CU.CSE.r_w=1'b0;
 		MPU.CU.CSE.type=0;
 		MPU.DP.MAR.Q=7'b0000000;
-		fi=$fopen("input.txt","r");//prueba2.txt
+		fi=$fopen("input2.txt","r");//prueba2.txt
 		while(!$feof(fi))begin
 			code = $fscanf(fi, "%b", Data);
 			MPU.CU.CSE.mov=0;
@@ -82,7 +82,7 @@ end
 
 always@(State)
 begin
-$display("%d    %d	   %h	%h	%b	%h	%h	%b	%d",State, wMAROut, MPU.DP.PC.Q, MPU.DP.NPC.Q, MPU.DP.FR.Q, MPU.DP.SPARC_ALU.Y, MPU.DP.MDR.Q, MPU.DP.SPARC_Condition_Tester.BCOND, $time);
+$display("%d    %d	   %h	%h	%b	%h	%h	%b	%d %h",State, wMAROut, MPU.DP.PC.Q, MPU.DP.NPC.Q, MPU.DP.FR.Q, MPU.DP.SPARC_ALU.Y, MPU.DP.MDR.Q, MPU.DP.SPARC_Condition_Tester.BCOND, $time, wIROut);
 
 //$display("%d    %d	   %h	%h	%h	%d",State, wMAROut, MPU.DP.IR.Q, MPU.DP.SPARC_ALU.Y, MPU.DP.SPARC_Shifter.Out, $time);
 end
